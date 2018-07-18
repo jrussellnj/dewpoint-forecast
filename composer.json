@@ -1,0 +1,6 @@
+{
+  "require": {
+    "altorouter/altorouter": "1.1.0",
+    "mustache/mustache": "~2.5"
+  }
+}

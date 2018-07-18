@@ -1,0 +1,6 @@
+<IfModule mod_rewrite.c>
+# Rewrite for Alto Router
+  RewriteEngine on
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule . index.php [L]
+</IfModule>
