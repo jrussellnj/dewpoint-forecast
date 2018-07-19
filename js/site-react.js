@@ -1,6 +1,7 @@
 'use strict';
 
 const e = React.createElement;
+const cachedCoords = localStorage.getItem('cachedCoords');
 
 // Create a React component to fetch weather data and display the upcoming dew point forecast
 class DewpointForecast extends React.Component {
@@ -13,61 +14,108 @@ class DewpointForecast extends React.Component {
       city: null,
       weather: null
     };
+
+    // Required to make 'this' work in the click callback
+    this.resetUserLocation = this.resetUserLocation.bind(this);
   }
 
   componentDidMount() {
-    let that = this;
 
-    // TODO: If the user has a cookie with their latitude and longitude, use that to make the API call,
+    // If the user has a latitude and longitude stored in local storage, use that to make the API call,
     // and if not, request their location from their browser
-    if (false) {
+    if (cachedCoords != null) {
+      this.getWeather(JSON.parse(cachedCoords));
     }
     else {
-
-      // Get the user's latitude and longitude
-      if ("geolocation" in navigator) {
-
-        navigator.geolocation.getCurrentPosition(
-
-          // If we get permission to the user's location, use it to kick off the API call
-          function(userCoords) {
-            console.log(userCoords);
-
-            // Fetch the weather data
-            fetch('/get-weather?longitude=' + userCoords.coords.longitude + '&latitude=' + userCoords.coords.latitude)
-              .then(results => {
-                return results.json()
-              })
-              .then(data => {
-                console.log(data);
-
-                // Update the state with the retrieveved weather data
-                that.setState({
-                  weather: data
-                });
-              });
-
-            // Get the city name for the user's location
-            that.getCityName(userCoords);
-          },
-
-          // If not, display an error
-          function(error) {
-            console.log(error);
-          }
-        );
-      }
-      else {
-
-        // If the user's browser doesn't have a geolocation API at all, display an error
-        console.log("Nope");
-      }
+      this.getUserLocation();
     }
   }
 
-  getCityName(userCoords) {
+  getUserLocation() {
+    let that = this;
+
+    // Get the user's latitude and longitude
+    if ("geolocation" in navigator) {
+
+      console.log("Getting location...");
+
+      navigator.geolocation.getCurrentPosition(
+
+        // If we get permission to the user's location, use it to kick off the API call
+        function(userCoords) {
+          console.log("Getting weather...");
+
+          // Hide the "Getting location..." indicator
+          $('.getting-location').hide();
+
+          // Save these coordinates to the local storage for faster weather retrieval on subsequent visits
+          localStorage.setItem('cachedCoords', JSON.stringify(cloneAsObject(userCoords.coords)));
+
+          // Get the weather
+          that.getWeather(userCoords.coords);
+        },
+
+        // If not, display an error
+        function(error) {
+          console.log(error);
+        },
+
+        // Options
+        {
+          enableHighAccuracy: true,
+          // timeout: 5000,
+          maximumAge: 60000
+        });
+    }
+    else {
+
+      // If the user's browser doesn't have a geolocation API at all, display an error
+      console.log("Nope");
+    }
+  }
+
+  resetUserLocation(e) {
+    e.preventDefault();
+
+    // Remove the locally-stored coords
+    localStorage.removeItem('cachedCoords');
+
+    // Reset the state
+    this.setState({
+      city: null,
+      weather: null
+    });
+
+    // Reinitialize the retrieval of the user's location
+    this.getUserLocation();
+  }
+
+  // Ask the server side to make an API call to Dark Sky to get the weather
+  getWeather(coords) {
+
+    let that = this;
+
+    fetch('/get-weather?longitude=' + coords.longitude + '&latitude=' + coords.latitude)
+      .then(results => {
+        return results.json()
+      })
+      .then(data => {
+        console.log(data);
+
+        // Update the state with the retrieveved weather data
+        that.setState({
+          weather: data
+        });
+      });
+
+    // Get the city name for the user's location
+    this.getCityName(coords);
+  }
+
+  // Use the Google Geolocation API to get the name of the city corresponding to the user's latitude and longitude
+  getCityName(coords) {
     let
-      geocodeUrl = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + userCoords.coords.latitude + ',' + userCoords.coords.longitude,
+      geocodeUrl = 'https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyCBYBfpS2m1cNHWPvPrp0WrUv1dTZiYO24&latlng=' + coords.latitude + ',' + coords.longitude,
       that = this;
 
     fetch(geocodeUrl)
@@ -75,7 +123,6 @@ class DewpointForecast extends React.Component {
         return results.json()
       })
       .then(data => {
-        console.log(data);
 
         let
           arr_address_comp = data.results[0].address_components,
@@ -125,18 +172,16 @@ class DewpointForecast extends React.Component {
   }
 
   render() {
-    console.log(this.state.weather);
 
     let dailyData = this.state.weather != null ? this.state.weather.daily.data.map(day =>
       <div className="day" key={day.time}>{day.dewPoint} - {this.getDiscomfortLevel(day.dewPoint)}</div>
     ) : null;
 
-    console.log("daily data", dailyData);
-
     return (
       <div>
         <h2>{this.state.city}</h2>
         <div className="daily-data">{dailyData}</div>
+        <a href="#" onClick={this.resetUserLocation}>Update Location</a>
       </div>
     );
   }
@@ -144,3 +189,20 @@ class DewpointForecast extends React.Component {
 
 const domContainer = document.querySelector('#forecast');
 ReactDOM.render(e(DewpointForecast), domContainer);
+
+
+// Needed for turning navigator.geolocation object into a JSON.stringify-able object
+function cloneAsObject(obj) {
+  if (obj === null || !(obj instanceof Object)) {
+    return obj;
+  }
+
+  var temp = (obj instanceof Array) ? [] : {};
+
+  for (var key in obj) {
+    temp[key] = cloneAsObject(obj[key]);
+  }
+
+  return temp;
+}
+
