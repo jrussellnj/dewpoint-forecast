@@ -24,6 +24,10 @@ class DewpointForecast extends React.Component {
     // If the user has a latitude and longitude stored in local storage, use that to make the API call,
     // and if not, request their location from their browser
     if (cachedCoords != null) {
+
+      // Hide the "Getting location..." indicator
+      $('.getting-location').hide();
+
       this.getWeather(JSON.parse(cachedCoords));
     }
     else {
@@ -174,13 +178,30 @@ class DewpointForecast extends React.Component {
   render() {
 
     let dailyData = this.state.weather != null ? this.state.weather.daily.data.map(day =>
-      <div className="day" key={day.time}>{day.dewPoint} - {this.getDiscomfortLevel(day.dewPoint)}</div>
+      <div className="day" key={day.time}>{Math.round(day.dewPoint)}&deg; - {this.getDiscomfortLevel(day.dewPoint)}</div>
     ) : null;
+
+    let currentlyData = this.state.weather != null ?
+      <div className="currently">
+        <div>Dewpoint: {Math.round(this.state.weather.currently.dewPoint)}&deg;</div>
+        <div>Temperature: {Math.round(this.state.weather.currently.temperature)}&deg; - {this.state.weather.currently.summary}</div>
+      </div>
+      : null;
 
     return (
       <div>
         <h2>{this.state.city}</h2>
+
+        <br / >
+
+        {currentlyData}
+
+        <br />
+
         <div className="daily-data">{dailyData}</div>
+
+        <br />
+
         <a href="#" onClick={this.resetUserLocation}>Update Location</a>
       </div>
     );
