@@ -1,0 +1,21 @@
+/* Dew point scale colors */
+/* Create classes corresponding to the above colors */
+.dp-level-1 {
+  color: #92CF60; }
+
+.dp-level-2 {
+  color: #1AB15A; }
+
+.dp-level-3 {
+  color: #FCFD4D; }
+
+.dp-level-4 {
+  color: #FBBF3C; }
+
+.dp-level-5 {
+  color: #FA0E1B; }
+
+.dp-level-6 {
+  color: #BC0711; }
+
+/*# sourceMappingURL=variables.css.map */

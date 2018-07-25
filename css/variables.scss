@@ -1,0 +1,32 @@
+/* Dew point scale colors */
+$dpLevel1: #92CF60;
+$dpLevel2: #1AB15A;
+$dpLevel3: #FCFD4D;
+$dpLevel4: #FBBF3C;
+$dpLevel5: #FA0E1B;
+$dpLevel6: #BC0711;
+
+/* Create classes corresponding to the above colors */
+.dp-level-1 {
+  color: $dpLevel1;
+}
+
+.dp-level-2 {
+  color: $dpLevel2;
+}
+
+.dp-level-3 {
+  color: $dpLevel3;
+}
+
+.dp-level-4 {
+  color: $dpLevel4;
+}
+
+.dp-level-5 {
+  color: $dpLevel5;
+}
+
+.dp-level-6 {
+  color: $dpLevel6;
+}

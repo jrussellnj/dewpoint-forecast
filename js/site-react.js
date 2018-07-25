@@ -148,37 +148,46 @@ class DewpointForecast extends React.Component {
   // Return the point on the discomfort scale for the provided dewpoint
   getDiscomfortLevel(dewpoint) {
 
-    let levelText = '';
+    let
+      levelText = '',
+      dpClass = '';
 
     if (dewpoint < 50) {
       levelText = 'Pleasant';
+      dpClass = 'dp-level-1';
     }
     else if (dewpoint >= 50 && dewpoint <= 55.99) {
       levelText = 'Comfortable';
+      dpClass = 'dp-level-1';
     }
     else if (dewpoint >= 56 && dewpoint <= 60.99) {
       levelText = 'Noticible';
+      dpClass = 'dp-level-2';
     }
     else if (dewpoint >= 61 && dewpoint <= 65.99) {
       levelText = 'Sticky';
+      dpClass = 'dp-level-3';
     }
     else if (dewpoint >= 66 && dewpoint <= 70.99) {
       levelText = 'Uncomfortable';
+      dpClass = 'dp-level-4';
     }
     else if (dewpoint >= 71 && dewpoint <= 75.99) {
       levelText = 'Harsh';
+      dpClass = 'dp-level-5';
     }
     else if (dewpoint > 75) {
       levelText = 'Severe Discomfort';
+      dpClass = 'dp-level-6';
     }
 
-    return levelText;
+    return { text: levelText, dpClass: dpClass };
   }
 
   render() {
 
     let dailyData = this.state.weather != null ? this.state.weather.daily.data.map(day =>
-      <div className="day" key={day.time}>{Math.round(day.dewPoint)}&deg; - {this.getDiscomfortLevel(day.dewPoint)}</div>
+      <div className={'day ' + this.getDiscomfortLevel(day.dewPoint).dpClass} key={day.time}>{Math.round(day.dewPoint)}&deg; - {this.getDiscomfortLevel(day.dewPoint).text}</div>
     ) : null;
 
     let currentlyData = this.state.weather != null ?
@@ -189,20 +198,16 @@ class DewpointForecast extends React.Component {
       : null;
 
     return (
-      <div>
-        <h2>{this.state.city}</h2>
-
-        <br / >
-
-        {currentlyData}
-
-        <br />
-
-        <div className="daily-data">{dailyData}</div>
-
-        <br />
-
-        <a href="#" onClick={this.resetUserLocation}>Update Location</a>
+      <div className="row">
+        <div className="col-12">
+          <h2>{this.state.city}</h2>
+          <br / >
+          {currentlyData}
+          <br />
+          <div className="daily-data">{dailyData}</div>
+          <br />
+          <a href="#" onClick={this.resetUserLocation}>Update Location</a>
+        </div>
       </div>
     );
   }
