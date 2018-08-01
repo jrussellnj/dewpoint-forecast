@@ -1,32 +1,42 @@
-/* Dew point scale colors */
-$dpLevel1: #92CF60;
-$dpLevel2: #1AB15A;
-$dpLevel3: #FCFD4D;
-$dpLevel4: #FBBF3C;
-$dpLevel5: #FA0E1B;
-$dpLevel6: #BC0711;
+/* Generate classes corresponding to a mapping of dew point scale colors */
+$dewPointShades: #C3E4A8 #82D4A5 #FDFD9D #FCDC94 #FC7B82 #DA777D;
 
-/* Create classes corresponding to the above colors */
-.dp-level-1 {
-  color: $dpLevel1;
+@for $i from 1 through length($dewPointShades) {
+  $shade: nth($dewPointShades, $i);
+
+  .dp-level-#{$i} {
+    background-color: $shade;
+  }
 }
 
-.dp-level-2 {
-  color: $dpLevel2;
+/* Site fonts */
+.regular-font {
+  font-family: 'Lora', serif;
+  font-weight: 400;
 }
 
-.dp-level-3 {
-  color: $dpLevel3;
+.bold-font {
+  font-family: 'Lora', serif;
+  font-weight: 700;
 }
 
-.dp-level-4 {
-  color: $dpLevel4;
+/* Useful mixins */
+@mixin vertical-align {
+  display: inline-block;
+  vertical-align: middle;
 }
 
-.dp-level-5 {
-  color: $dpLevel5;
-}
+/* Animation */
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
 
-.dp-level-6 {
-  color: $dpLevel6;
+  50% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }

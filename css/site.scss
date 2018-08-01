@@ -1,2 +1,50 @@
 @import 'variables';
+@import 'header';
+@import 'footer';
 
+// General body styling
+body {
+  font-family: 'Lora', serif;
+}
+
+.getting-location {
+  img {
+    animation: pulse 1s infinite;
+    height: 25px;
+  }
+}
+
+// Forecast block
+.forecast-holder {
+  display: none;
+
+  .currently {
+    margin: 0 0 2em;
+
+    .city-name {
+      @extend .bold-font;
+      font-size: 2em;
+    }
+
+    .currently-data {
+      font-size: 1.1em;
+      margin: 1em 0;
+
+      .temp-icon {
+        @include vertical-align;
+        height: 25px;
+      }
+    }
+  }
+
+  .day {
+    // border: 1px solid black;
+    min-height: 15em;
+    padding: 5px;
+
+    .inner-wrapper {
+      height: 250px;
+      width: 100%;
+    }
+  }
+}

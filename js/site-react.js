@@ -26,7 +26,7 @@ class DewpointForecast extends React.Component {
     if (cachedCoords != null) {
 
       // Hide the "Getting location..." indicator
-      $('.getting-location').hide();
+      $('.getting-location').fadeOut();
 
       this.getWeather(JSON.parse(cachedCoords));
     }
@@ -50,7 +50,7 @@ class DewpointForecast extends React.Component {
           console.log("Getting weather...");
 
           // Hide the "Getting location..." indicator
-          $('.getting-location').hide();
+          $('.getting-location').fadeOut();
 
           // Save these coordinates to the local storage for faster weather retrieval on subsequent visits
           localStorage.setItem('cachedCoords', JSON.stringify(cloneAsObject(userCoords.coords)));
@@ -110,6 +110,9 @@ class DewpointForecast extends React.Component {
         that.setState({
           weather: data
         });
+
+        // Fade the forecast blocks in
+        $('.forecast-holder').fadeIn();
       });
 
     // Get the city name for the user's location
@@ -173,7 +176,7 @@ class DewpointForecast extends React.Component {
       dpClass = 'dp-level-4';
     }
     else if (dewpoint >= 71 && dewpoint <= 75.99) {
-      levelText = 'Harsh';
+      levelText = 'Oppressive';
       dpClass = 'dp-level-5';
     }
     else if (dewpoint > 75) {
@@ -187,27 +190,37 @@ class DewpointForecast extends React.Component {
   render() {
 
     let dailyData = this.state.weather != null ? this.state.weather.daily.data.map(day =>
-      <div className={'day ' + this.getDiscomfortLevel(day.dewPoint).dpClass} key={day.time}>{Math.round(day.dewPoint)}&deg; - {this.getDiscomfortLevel(day.dewPoint).text}</div>
+      <div className="col-12 col-sm-4 col-md-3 day" key={day.time}>
+        <div className={ 'd-flex align-items-center p-3 inner-wrapper ' + this.getDiscomfortLevel(day.dewPoint).dpClass}>
+          <div className="day-contents">{Math.round(day.dewPoint)}&deg; - {this.getDiscomfortLevel(day.dewPoint).text}</div>
+        </div>
+      </div>
     ) : null;
 
     let currentlyData = this.state.weather != null ?
-      <div className="currently">
-        <div>Dewpoint: {Math.round(this.state.weather.currently.dewPoint)}&deg;</div>
-        <div>Temperature: {Math.round(this.state.weather.currently.temperature)}&deg; - {this.state.weather.currently.summary}</div>
+      <div className="currently-data">
+        <div><img className="temp-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAMnSURBVGhD1dlJ6E5fHMfxn3koM7EwLoRkLFamlJREFoidpY0pGVLGlRILIVOx4N8/paTYIDIvFFmYFlJIFuZ5fn/i1unb189zn3Pu89znU6/8uve459yee890m2qQBVj4+8/GTT+8wGsM1IFGTAucxc8/LqEVGi7Lkd1EZj0aKoPxAfZGvmA0GiItcRH2JjK30Balz1J4NxDajFJnEN7Ba3zoK8aitDkFr+GeGyhlLzYXXoObswylSic8RtjISh6xt9CgWZrsgG3kGeeY5wRKEY0L3xA27gpOm2PNmY265zxsw2agkkcr8wDtULfMgW2UBsOJ5lglVqAuaYP7sA2aBs2p7PF/eYmeqHnUddrGXIZyAfZcJXaipukBrTNsQ6ajIz4Fx/LQiD8MNctW2EZcgzIV9lwe/6Mm0a+hgcw2YB6U1bDn8viOISg8m2Arf4TWUI7Dns/rEApNZ6h3sRWvRJYnsOfz0ruimXRhWQtb6Wd0h6J/7flq7UEh6YDnsBUeQ5ZJsOerpZ6vN5JnEbwKZyLLYnhlqrUGyXMVtiL9QtlLruyCLRNDczBtKyXLcHgVHUaYk/DKxZiAZNkIrxK7FaodEq9cjO1IltuwFWjgspM8r2uO9RBJ0gdeBXcRRnMsr1wKSfaNvTWHaAQP0x9euRTmIzp/ez/2I4zmR165FDQtis5eeBe3NzIGXrkU1IboHIF3cTvdVjfplUtBbYjOAXgX105JmPHwyqWwD9HZAu/i+goVbnkOhVcuhSTviL4BeheXcciiBZdXJoUkvVZz3eo2hHkGr1ysvkgSb2QXPV69kCXP7mKlbiJZVsGrRHYjyxJ4ZWKEq8/odMMbeBVp33cWFD2GWqZ65arxCl2RNBvgVSbvMRnKUXhlqrEOydMe9+BVKPpiq/3bAdC745XJ4w4K29jWNOQjvIozejnPmWN56RceiUKj2bD9HpJS+M4VHq0MtQ3kNSSGrplk8MuTKXgKr0HV0DfIpOvzPNFSV9ubP+A1rhL6vwehKU7dMwr/Ic/nBJVVVz0CpYsGTr0/WnRdh/a99NyL/tanB03JNRHtgkRpavoF+r3rOcpEAekAAAAASUVORK5CYII=" />  Dewpoint: {Math.round(this.state.weather.currently.dewPoint)}&deg;</div>
+
+        <div><img className="temp-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGUSURBVGhD7dlPKwVRGMfxkT/vgIWyUeyEbCysLbHxCki8ARTegSxI1raUl6CUpPAqZMMGJSt/vk9ZnE5PY+YM5zx3Or/61G3uOdPv6XZvc2eKnJyc6BnCHq5x65Fj8t4gTGcMT/j6xSNkrdncQSuuuYHJjEArXGYY5jIDt+QbFj1yzF0je8zFH+QZfuSYuyYP8p9p7SDv2PDIMXfNEdz3J5E8/iAh1pA8eRBHxw5yjhPHLJInZBDZYy55EGsJGWQJU45+JE/IIL788/uXyYM4OnYQ2WMurRikG8fQypaRPbLXRHpwCq1oFXKNZWKYTWgF61hH0ozC/9cXQs4h50qWA2jFQuwjSfpQ5fZoVXIbtRfRIzcKtEJNjCN65qGVaWIO0bMMrUwTclkfPQvQyjQhn3L0TEAr00SSZyZdeIBWKMQ95JxJIo/RtFIhdpEsA3iFVqyOFyT/v74KrVwdKzCRQ2gFq5C9ZiJf0h18Qiur+cAWkn3ByzKNS2jFXReQteYj10zbOMPVD3ktx0w/X8/JaWeK4hty3mYSxgquqwAAAABJRU5ErkJggg==" /> Temperature: {Math.round(this.state.weather.currently.temperature)}&deg;</div>
+
+        <div><img className="temp-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALlSURBVGhD7dlJyE1hHMfxay5EvBKRiEy9kTFDLJQFRUKGZPGmLFAWxggrQxYidoqshGRYGVIkRESIbMjCmIUhCxS+v5unnvf4n3vPuc50c3/1Wbznvec5z3PPc57h3FIjjRQrw3ECO9FOB+o1V/Drj6U6UK95CNeQzTpQr7kP15C1OlDEqGIPsLH8l52tUCM+YrAOGOmDc7iNsTqQZXriJ9y3vQthGQZ93kovPIEr5yQyTSe8hKuAGjUOcXMQrgzZi8wzBh/gGjIKcbMPrhHn0RG5RP1ec8TC8l+to+60GOuwBtMQnEu6YwfWo4MOFCldoS7zDe7bdp5jPgoffcP3EGyAT91wEwqds7AqH6TGzEIhMxlWpcNo1s8lg7Ade6CJri/8+CNQVJpjMs9T+JW4CT8X4P8/ilwe/LfwK6GG+fFXulHNQ6X0wAoch7riCzzGRWjYHo3YmY4zuIxTGA8/h2FVNsxnaL9ipTN24wusc32XoMk5scyBdSHfK2jobUbYRmsonsE6P8wPrEIiaYs7sC70HRtQbQkyBO9hlRHFNiQSVeQ1/MJ1FyahWrog7p0I0vxkLZdqygC4B/8rJsCPljDay1zDG3yCHuBbCFasFhqUdI1Y6YblGFH+q3UmQgtFPzMQvGNp2ILI0c7ObYq0QNSdqJS50EMZvGgaVK9I0YhzF/7JUxEWNVpdyP982gaiavrDP0nzS6X3Vvvhfz4LMxEpR6ETjqHasPoOwQulrQWJph+sC6VNg1BiWYRHsC6UNs1f2ma3R83R8+K6Xt5uoAk15QCsQvOiyTf2nZkCLRWsAvOkNzmxchpWQXnTXqYNIkXPhvYZVkFFELb/+Suawa0CikJ7pkjpDauAopiNSFEfjLI9zYu1Sg+N9vNWIXnTwx4relFXxOF3NWLnEKzC8nIVNb3t1zB8BFahWbsO/TL2T1kC/6e1LGnvrkVjor+7jMQCrMzAMuiFh15PNdJII/9nSqXf1/bBDOtlYbMAAAAASUVORK5CYII="/> {this.state.weather.currently.summary}</div>
       </div>
       : null;
 
     return (
       <div className="row">
-        <div className="col-12">
-          <h2>{this.state.city}</h2>
-          <br / >
-          {currentlyData}
-          <br />
-          <div className="daily-data">{dailyData}</div>
-          <br />
-          <a href="#" onClick={this.resetUserLocation}>Update Location</a>
+        <div className="col-xs-12 col-md-6">
+
+          <div className="currently">
+            <div>Currently in...</div>
+            <div className="city-name">{this.state.city}</div>
+            <a className="update-location" href="#" onClick={this.resetUserLocation}>Update Location</a>
+
+            {currentlyData}
+          </div>
         </div>
+
+        {dailyData}
       </div>
     );
   }
@@ -215,7 +228,6 @@ class DewpointForecast extends React.Component {
 
 const domContainer = document.querySelector('#forecast');
 ReactDOM.render(e(DewpointForecast), domContainer);
-
 
 // Needed for turning navigator.geolocation object into a JSON.stringify-able object
 function cloneAsObject(obj) {

@@ -1,0 +1,11 @@
+header {
+  @extend .bold-font;
+  margin: 2em 0;
+  text-align: center;
+
+  img {
+    display: inline-block;
+    height: 40px;
+    vertical-align: middle;
+  }
+}
