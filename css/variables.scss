@@ -1,5 +1,6 @@
 /* Generate classes corresponding to a mapping of dew point scale colors */
 $dewPointShades: #C3E4A8 #82D4A5 #FDFD9D #FCDC94 #FC7B82 #DA777D;
+// $dewPointShades: #D7EDC5 #ABE2C3 #FDFEBE #FDE7B8 #FDA7AC #DD8388;
 
 @for $i from 1 through length($dewPointShades) {
   $shade: nth($dewPointShades, $i);

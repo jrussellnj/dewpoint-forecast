@@ -58,21 +58,55 @@ body {
 .forecast-holder {
   display: none; }
   .forecast-holder .currently {
-    margin: 0 0 2em; }
+    position: relative; }
     .forecast-holder .currently .city-name {
       font-size: 2em; }
+    .forecast-holder .currently .dewpoint {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 4em; }
     .forecast-holder .currently .currently-data {
       font-size: 1.1em;
       margin: 1em 0; }
-      .forecast-holder .currently .currently-data .temp-icon {
+      .forecast-holder .currently .currently-data .update-location {
+        color: inherit;
         display: inline-block;
-        vertical-align: middle;
-        height: 25px; }
+        margin-top: 10px;
+        font-size: .75em; }
   .forecast-holder .day {
     min-height: 15em;
     padding: 5px; }
     .forecast-holder .day .inner-wrapper {
       height: 250px;
       width: 100%; }
+      .forecast-holder .day .inner-wrapper .dewdrop-icon {
+        display: inline-block;
+        vertical-align: middle;
+        height: 30px; }
+      .forecast-holder .day .inner-wrapper .icon-holder {
+        display: inline-block;
+        width: 20px; }
+      .forecast-holder .day .inner-wrapper .small-icon {
+        display: inline-block;
+        vertical-align: middle;
+        height: 15px; }
+      .forecast-holder .day .inner-wrapper .day-contents {
+        height: 100%;
+        position: relative;
+        width: 100%; }
+        .forecast-holder .day .inner-wrapper .day-contents .temperature {
+          font-size: 4em;
+          position: absolute;
+          text-align: center;
+          top: 0;
+          width: 100%; }
+          .forecast-holder .day .inner-wrapper .day-contents .temperature .discomfort-text {
+            font-size: .25em;
+            text-align: center; }
+        .forecast-holder .day .inner-wrapper .day-contents .summary {
+          bottom: 0;
+          font-size: .9em;
+          position: absolute; }
 
 /*# sourceMappingURL=site.css.map */

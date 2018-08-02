@@ -19,32 +19,81 @@ body {
   display: none;
 
   .currently {
-    margin: 0 0 2em;
+    position: relative;
 
     .city-name {
       @extend .bold-font;
       font-size: 2em;
     }
 
+    .dewpoint {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 4em;
+    }
+
     .currently-data {
       font-size: 1.1em;
       margin: 1em 0;
 
-      .temp-icon {
-        @include vertical-align;
-        height: 25px;
+      .update-location {
+        color: inherit;
+        display: inline-block;
+        margin-top: 10px;
+        font-size: .75em;
       }
     }
   }
 
   .day {
-    // border: 1px solid black;
     min-height: 15em;
     padding: 5px;
 
     .inner-wrapper {
       height: 250px;
       width: 100%;
+
+      .dewdrop-icon{
+        @include vertical-align;
+        height: 30px;
+      }
+
+      .icon-holder {
+        display: inline-block;
+        width: 20px;
+      }
+
+      .small-icon {
+        @include vertical-align;
+        height: 15px;
+      }
+
+      .day-contents {
+        height: 100%;
+        position: relative;
+        width: 100%;
+
+        .temperature {
+          font-size: 4em;
+          position: absolute;
+          text-align: center;
+          top: 0;
+          width: 100%;
+
+          .discomfort-text {
+            font-size: .25em;
+            text-align: center;
+          }
+        }
+
+        .summary {
+          bottom: 0;
+          font-size: .9em;
+          position: absolute;
+
+        }
+      }
     }
   }
 }

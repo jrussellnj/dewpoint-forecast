@@ -81,6 +81,13 @@ class DewpointForecast extends React.Component {
   resetUserLocation(e) {
     e.preventDefault();
 
+    // Fade out the forecast data
+    $('.forecast-holder').fadeOut(function() {
+
+      // Show location loader
+      $('.getting-location').fadeIn();
+    });
+
     // Remove the locally-stored coords
     localStorage.removeItem('cachedCoords');
 
@@ -189,37 +196,49 @@ class DewpointForecast extends React.Component {
 
   render() {
 
+    let currentlyData = this.state.weather != null ?
+      <div className="col-11 col-md-6 currently day">
+        <div className={'p-3 inner-wrapper ' + this.getDiscomfortLevel(this.state.weather.currently.dewPoint).dpClass}>
+          <div>Currently in...</div>
+          <div className="city-name">{this.state.city}</div>
+
+          <div className="dewpoint">
+            <img className="dewdrop-icon" src="/image/icons8-water-48.png" /> {Math.round(this.state.weather.currently.dewPoint)}&deg;
+          </div>
+
+          <div className="currently-data">
+            <div><img className="small-icon" src="/image/icons8-partly-cloudy-day-30.png"/> {this.state.weather.currently.summary}</div>
+            <div><img className="small-icon" src="/image/icons8-temperature-24.png" /> Temperature: {Math.round(this.state.weather.currently.temperature)}&deg;</div>
+            <div><img className="small-icon" src="/image/icons8-humidity-26.png" />  Humidity: {Math.round(this.state.weather.currently.humidity * 100)}%</div>
+
+            <a className="update-location" href="#" onClick={this.resetUserLocation}><img className="small-icon" src="/image/icons8-synchronize-26.png" /> Update Location</a>
+          </div>
+        </div>
+      </div>
+      : null;
+
     let dailyData = this.state.weather != null ? this.state.weather.daily.data.map(day =>
-      <div className="col-12 col-sm-4 col-md-3 day" key={day.time}>
+      <div className="col-11 col-sm-4 col-md-3 day" key={day.time}>
         <div className={ 'd-flex align-items-center p-3 inner-wrapper ' + this.getDiscomfortLevel(day.dewPoint).dpClass}>
-          <div className="day-contents">{Math.round(day.dewPoint)}&deg; - {this.getDiscomfortLevel(day.dewPoint).text}</div>
+          <div className="day-contents">
+
+            <div className="temperature">
+              <img className="dewdrop-icon" src="/image/icons8-water-48.png" /> {Math.round(day.dewPoint)}&deg;
+              <div className="discomfort-text">{this.getDiscomfortLevel(day.dewPoint).text}</div>
+            </div>
+
+            <div className="summary">
+              <div><span className="icon-holder"><img className="small-icon" src="/image/icons8-temperature-24.png" /></span>High: {Math.round(day.temperatureHigh)}&deg;</div>
+              <div><span className="icon-holder"><img className="small-icon" src="/image/icons8-partly-cloudy-day-30.png" /></span> {day.summary}</div>
+            </div>
+          </div>
         </div>
       </div>
     ) : null;
 
-    let currentlyData = this.state.weather != null ?
-      <div className="currently-data">
-        <div><img className="temp-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAMnSURBVGhD1dlJ6E5fHMfxn3koM7EwLoRkLFamlJREFoidpY0pGVLGlRILIVOx4N8/paTYIDIvFFmYFlJIFuZ5fn/i1unb189zn3Pu89znU6/8uve459yee890m2qQBVj4+8/GTT+8wGsM1IFGTAucxc8/LqEVGi7Lkd1EZj0aKoPxAfZGvmA0GiItcRH2JjK30Balz1J4NxDajFJnEN7Ba3zoK8aitDkFr+GeGyhlLzYXXoObswylSic8RtjISh6xt9CgWZrsgG3kGeeY5wRKEY0L3xA27gpOm2PNmY265zxsw2agkkcr8wDtULfMgW2UBsOJ5lglVqAuaYP7sA2aBs2p7PF/eYmeqHnUddrGXIZyAfZcJXaipukBrTNsQ6ajIz4Fx/LQiD8MNctW2EZcgzIV9lwe/6Mm0a+hgcw2YB6U1bDn8viOISg8m2Arf4TWUI7Dns/rEApNZ6h3sRWvRJYnsOfz0ruimXRhWQtb6Wd0h6J/7flq7UEh6YDnsBUeQ5ZJsOerpZ6vN5JnEbwKZyLLYnhlqrUGyXMVtiL9QtlLruyCLRNDczBtKyXLcHgVHUaYk/DKxZiAZNkIrxK7FaodEq9cjO1IltuwFWjgspM8r2uO9RBJ0gdeBXcRRnMsr1wKSfaNvTWHaAQP0x9euRTmIzp/ez/2I4zmR165FDQtis5eeBe3NzIGXrkU1IboHIF3cTvdVjfplUtBbYjOAXgX105JmPHwyqWwD9HZAu/i+goVbnkOhVcuhSTviL4BeheXcciiBZdXJoUkvVZz3eo2hHkGr1ysvkgSb2QXPV69kCXP7mKlbiJZVsGrRHYjyxJ4ZWKEq8/odMMbeBVp33cWFD2GWqZ65arxCl2RNBvgVSbvMRnKUXhlqrEOydMe9+BVKPpiq/3bAdC745XJ4w4K29jWNOQjvIozejnPmWN56RceiUKj2bD9HpJS+M4VHq0MtQ3kNSSGrplk8MuTKXgKr0HV0DfIpOvzPNFSV9ubP+A1rhL6vwehKU7dMwr/Ic/nBJVVVz0CpYsGTr0/WnRdh/a99NyL/tanB03JNRHtgkRpavoF+r3rOcpEAekAAAAASUVORK5CYII=" />  Dewpoint: {Math.round(this.state.weather.currently.dewPoint)}&deg;</div>
-
-        <div><img className="temp-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGUSURBVGhD7dlPKwVRGMfxkT/vgIWyUeyEbCysLbHxCki8ARTegSxI1raUl6CUpPAqZMMGJSt/vk9ZnE5PY+YM5zx3Or/61G3uOdPv6XZvc2eKnJyc6BnCHq5x65Fj8t4gTGcMT/j6xSNkrdncQSuuuYHJjEArXGYY5jIDt+QbFj1yzF0je8zFH+QZfuSYuyYP8p9p7SDv2PDIMXfNEdz3J5E8/iAh1pA8eRBHxw5yjhPHLJInZBDZYy55EGsJGWQJU45+JE/IIL788/uXyYM4OnYQ2WMurRikG8fQypaRPbLXRHpwCq1oFXKNZWKYTWgF61hH0ozC/9cXQs4h50qWA2jFQuwjSfpQ5fZoVXIbtRfRIzcKtEJNjCN65qGVaWIO0bMMrUwTclkfPQvQyjQhn3L0TEAr00SSZyZdeIBWKMQ95JxJIo/RtFIhdpEsA3iFVqyOFyT/v74KrVwdKzCRQ2gFq5C9ZiJf0h18Qiur+cAWkn3ByzKNS2jFXReQteYj10zbOMPVD3ktx0w/X8/JaWeK4hty3mYSxgquqwAAAABJRU5ErkJggg==" /> Temperature: {Math.round(this.state.weather.currently.temperature)}&deg;</div>
-
-        <div><img className="temp-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALlSURBVGhD7dlJyE1hHMfxay5EvBKRiEy9kTFDLJQFRUKGZPGmLFAWxggrQxYidoqshGRYGVIkRESIbMjCmIUhCxS+v5unnvf4n3vPuc50c3/1Wbznvec5z3PPc57h3FIjjRQrw3ECO9FOB+o1V/Drj6U6UK95CNeQzTpQr7kP15C1OlDEqGIPsLH8l52tUCM+YrAOGOmDc7iNsTqQZXriJ9y3vQthGQZ93kovPIEr5yQyTSe8hKuAGjUOcXMQrgzZi8wzBh/gGjIKcbMPrhHn0RG5RP1ec8TC8l+to+60GOuwBtMQnEu6YwfWo4MOFCldoS7zDe7bdp5jPgoffcP3EGyAT91wEwqds7AqH6TGzEIhMxlWpcNo1s8lg7Ade6CJri/8+CNQVJpjMs9T+JW4CT8X4P8/ilwe/LfwK6GG+fFXulHNQ6X0wAoch7riCzzGRWjYHo3YmY4zuIxTGA8/h2FVNsxnaL9ipTN24wusc32XoMk5scyBdSHfK2jobUbYRmsonsE6P8wPrEIiaYs7sC70HRtQbQkyBO9hlRHFNiQSVeQ1/MJ1FyahWrog7p0I0vxkLZdqygC4B/8rJsCPljDay1zDG3yCHuBbCFasFhqUdI1Y6YblGFH+q3UmQgtFPzMQvGNp2ILI0c7ObYq0QNSdqJS50EMZvGgaVK9I0YhzF/7JUxEWNVpdyP982gaiavrDP0nzS6X3Vvvhfz4LMxEpR6ETjqHasPoOwQulrQWJph+sC6VNg1BiWYRHsC6UNs1f2ma3R83R8+K6Xt5uoAk15QCsQvOiyTf2nZkCLRWsAvOkNzmxchpWQXnTXqYNIkXPhvYZVkFFELb/+Suawa0CikJ7pkjpDauAopiNSFEfjLI9zYu1Sg+N9vNWIXnTwx4relFXxOF3NWLnEKzC8nIVNb3t1zB8BFahWbsO/TL2T1kC/6e1LGnvrkVjor+7jMQCrMzAMuiFh15PNdJII/9nSqXf1/bBDOtlYbMAAAAASUVORK5CYII="/> {this.state.weather.currently.summary}</div>
-      </div>
-      : null;
-
     return (
-      <div className="row">
-        <div className="col-xs-12 col-md-6">
-
-          <div className="currently">
-            <div>Currently in...</div>
-            <div className="city-name">{this.state.city}</div>
-            <a className="update-location" href="#" onClick={this.resetUserLocation}>Update Location</a>
-
-            {currentlyData}
-          </div>
-        </div>
-
+      <div className="row justify-content-center justify-content-md-start">
+        {currentlyData}
         {dailyData}
       </div>
     );
