@@ -35,6 +35,11 @@ body {
       top: 20px;
       right: 20px;
       font-size: 4em;
+
+      .discomfort-text {
+        font-size: .3em;
+        text-align: center;
+      }
     }
 
     .currently-data {
@@ -80,10 +85,16 @@ body {
 
         .temperature {
           font-size: 4em;
+          line-height: .75em;
           position: absolute;
           text-align: center;
           top: 0;
           width: 100%;
+
+          .date {
+            font-size: .25em;
+            text-align: left;
+          }
 
           .discomfort-text {
             font-size: .25em;

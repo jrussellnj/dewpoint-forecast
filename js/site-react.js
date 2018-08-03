@@ -121,6 +121,8 @@ class DewpointForecast extends React.Component {
         return results.json()
       })
       .then(data => {
+        console.log(data);
+
         $('.getting-weather').fadeOut(function() {
 
           // Fade the forecast blocks out, if they're out, then fade the new weather in
@@ -242,6 +244,12 @@ class DewpointForecast extends React.Component {
     });
   }
 
+  /* Perform date formatting on a unix timestamp */
+  formatDate(timestamp) {
+    let d = new Date(timestamp * 1000);
+    return d.format('l, F jS');
+  }
+
   render() {
 
     let currentlyData = this.state.weather != null ?
@@ -251,7 +259,8 @@ class DewpointForecast extends React.Component {
           <div className="city-name">{this.state.city}</div>
 
           <div className="dewpoint">
-            <img className="dewdrop-icon" src="/image/icons8-water-48.png" /> {Math.round(this.state.weather.currently.dewPoint)}&deg;
+            <div><img className="dewdrop-icon" src="/image/icons8-water-48.png" /> {Math.round(this.state.weather.currently.dewPoint)}&deg;</div>
+            <div className="discomfort-text">{this.getDiscomfortLevel(this.state.weather.currently.dewPoint).text}</div>
           </div>
 
           <div className="currently-data">
@@ -269,13 +278,13 @@ class DewpointForecast extends React.Component {
           <div className="day-contents">
 
             <div className="temperature">
+              <div className="date">{this.formatDate(day.time)}</div>
               <img className="dewdrop-icon" src="/image/icons8-water-48.png" /> {Math.round(day.dewPoint)}&deg;
               <div className="discomfort-text">{this.getDiscomfortLevel(day.dewPoint).text}</div>
             </div>
 
             <div className="summary">
-              <div><span className="icon-holder"><img className="small-icon" src="/image/icons8-temperature-24.png" /></span>High: {Math.round(day.temperatureHigh)}&deg;</div>
-              <div><span className="icon-holder"><img className="small-icon" src="/image/icons8-partly-cloudy-day-30.png" /></span> {day.summary}</div>
+              <div>{day.summary} High: {Math.round(day.temperatureHigh)}&deg;. Humidity: {Math.round(day.humidity * 100)}%.</div>
             </div>
           </div>
         </div>
