@@ -1,11 +1,28 @@
 header {
-  @extend .bold-font;
+  @extend .regular-font;
   margin: 2em 0;
   text-align: center;
 
-  img {
+  .dewdrop {
     display: inline-block;
     height: 40px;
     vertical-align: middle;
+  }
+
+  .locate-me {
+    color: inherit;
+    margin: 0 0 0 .5em;
+    text-decoration: none;
+
+    input {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    img {
+      display: inline-block;
+      height: 20px;
+      vertical-align: middle;
+    }
   }
 }

@@ -20,34 +20,40 @@ class DewpointForecast extends React.Component {
   }
 
   componentDidMount() {
+    let that = this;
 
     // If the user has a latitude and longitude stored in local storage, use that to make the API call,
     // and if not, request their location from their browser
     if (cachedCoords != null) {
-
-      // Hide the "Getting location..." indicator
-      $('.getting-location').fadeOut();
-
       this.getWeather(JSON.parse(cachedCoords));
     }
     else {
       this.getUserLocation();
     }
+
+    // Connect the initLookup function within this class to the global window context, so Google Maps can invoke it
+    window.initLookup = this.initLookup.bind(this);
+
+    // Asynchronously load the Google Maps script, passing in the callback reference
+    loadJS('https://maps.googleapis.com/maps/api/js?key=AIzaSyCBYBfpS2m1cNHWPvPrp0WrUv1dTZiYO24&libraries=places&callback=initLookup');
+
+    $('.locate-me').click(function() {
+      that.resetUserLocation();
+    });
   }
 
   getUserLocation() {
     let that = this;
 
+    $('.getting-location').css('display', 'flex').hide().fadeIn();
+
     // Get the user's latitude and longitude
     if ("geolocation" in navigator) {
-
-      console.log("Getting location...");
 
       navigator.geolocation.getCurrentPosition(
 
         // If we get permission to the user's location, use it to kick off the API call
         function(userCoords) {
-          console.log("Getting weather...");
 
           // Hide the "Getting location..." indicator
           $('.getting-location').fadeOut();
@@ -67,7 +73,6 @@ class DewpointForecast extends React.Component {
         // Options
         {
           enableHighAccuracy: true,
-          // timeout: 5000,
           maximumAge: 60000
         });
     }
@@ -79,22 +84,26 @@ class DewpointForecast extends React.Component {
   }
 
   resetUserLocation(e) {
-    e.preventDefault();
+    let that = this;
+
+    if (e) {
+      e.preventDefault();
+    }
 
     // Fade out the forecast data
     $('.forecast-holder').fadeOut(function() {
 
+      // Remove the locally-stored coords
+      localStorage.removeItem('cachedCoords');
+
+      // Reset the state
+      that.setState({
+        city: null,
+        weather: null
+      });
+
       // Show location loader
       $('.getting-location').fadeIn();
-    });
-
-    // Remove the locally-stored coords
-    localStorage.removeItem('cachedCoords');
-
-    // Reset the state
-    this.setState({
-      city: null,
-      weather: null
     });
 
     // Reinitialize the retrieval of the user's location
@@ -103,28 +112,32 @@ class DewpointForecast extends React.Component {
 
   // Ask the server side to make an API call to Dark Sky to get the weather
   getWeather(coords) {
-
     let that = this;
+
+    $('.getting-weather').css('display', 'flex').hide().fadeIn();
 
     fetch('/get-weather?longitude=' + coords.longitude + '&latitude=' + coords.latitude)
       .then(results => {
         return results.json()
       })
       .then(data => {
-        console.log(data);
+        $('.getting-weather').fadeOut(function() {
 
-        // Update the state with the retrieveved weather data
-        that.setState({
-          weather: data
+          // Fade the forecast blocks out, if they're out, then fade the new weather in
+          $('.forecast-holder').fadeOut(function() {
+
+            // Get the city name for the user's location
+            that.getCityName(coords);
+
+            // Update the state with the retrieveved weather data
+            that.setState({
+              weather: data
+            });
+          }).fadeIn();
         });
-
-        // Fade the forecast blocks in
-        $('.forecast-holder').fadeIn();
       });
-
-    // Get the city name for the user's location
-    this.getCityName(coords);
   }
+
 
   // Use the Google Geolocation API to get the name of the city corresponding to the user's latitude and longitude
   getCityName(coords) {
@@ -194,6 +207,41 @@ class DewpointForecast extends React.Component {
     return { text: levelText, dpClass: dpClass };
   }
 
+  /* Used for the location search bar */
+  initLookup() {
+    let
+      that = this,
+      input = document.getElementById('location-search'),
+      autocomplete = new google.maps.places.Autocomplete(input, { placeIdOnly: true }),
+      geocoder = new google.maps.Geocoder;
+
+    autocomplete.addListener('place_changed', function() {
+      var place = autocomplete.getPlace();
+
+      if (!place.place_id) {
+        return;
+      }
+
+      // Hide the old forecast
+      $('.forecast-holder').fadeOut();
+
+      // Get the latitude and longitude for the new location and then find its weather
+      geocoder.geocode({ 'placeId': place.place_id }, function(results, status) {
+        if (status !== 'OK') {
+          window.alert('Geocoder failed due to: ' + status);
+          return;
+        }
+
+        // Get weather for the requested location
+        that.getWeather({ latitude: results[0].geometry.location.lat(), longitude: results[0].geometry.location.lng() });
+
+        // Save this location in localStorage for subsequent visits
+        localStorage.removeItem('cachedCoords');
+        localStorage.setItem('cachedCoords', JSON.stringify({ latitude: results[0].geometry.location.lat(), longitude: results[0].geometry.location.lng() }));
+      });
+    });
+  }
+
   render() {
 
     let currentlyData = this.state.weather != null ?
@@ -210,8 +258,6 @@ class DewpointForecast extends React.Component {
             <div><img className="small-icon" src="/image/icons8-partly-cloudy-day-30.png"/> {this.state.weather.currently.summary}</div>
             <div><img className="small-icon" src="/image/icons8-temperature-24.png" /> Temperature: {Math.round(this.state.weather.currently.temperature)}&deg;</div>
             <div><img className="small-icon" src="/image/icons8-humidity-26.png" />  Humidity: {Math.round(this.state.weather.currently.humidity * 100)}%</div>
-
-            <a className="update-location" href="#" onClick={this.resetUserLocation}><img className="small-icon" src="/image/icons8-synchronize-26.png" /> Update Location</a>
           </div>
         </div>
       </div>
@@ -248,18 +294,12 @@ class DewpointForecast extends React.Component {
 const domContainer = document.querySelector('#forecast');
 ReactDOM.render(e(DewpointForecast), domContainer);
 
-// Needed for turning navigator.geolocation object into a JSON.stringify-able object
-function cloneAsObject(obj) {
-  if (obj === null || !(obj instanceof Object)) {
-    return obj;
-  }
+function loadJS(src) {
+  var
+    ref = window.document.getElementsByTagName("script")[0],
+    script = window.document.createElement("script");
 
-  var temp = (obj instanceof Array) ? [] : {};
-
-  for (var key in obj) {
-    temp[key] = cloneAsObject(obj[key]);
-  }
-
-  return temp;
+  script.src = src;
+  script.async = true;
+  ref.parentNode.insertBefore(script, ref);
 }
-

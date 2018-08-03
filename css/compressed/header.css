@@ -1,7 +1,7 @@
 /*
-Sass::SyntaxError: "header" failed to @extend ".bold-font".
-The selector ".bold-font" was not found.
-Use "@extend .bold-font !optional" if the extend should be able to fail.
+Sass::SyntaxError: "header" failed to @extend ".regular-font".
+The selector ".regular-font" was not found.
+Use "@extend .regular-font !optional" if the extend should be able to fail.
 
 
 Backtrace:
@@ -34,4 +34,4 @@ css/header.scss:2
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Sass::SyntaxError: \"header\" failed to @extend \".bold-font\".\A The selector \".bold-font\" was not found.\A Use \"@extend .bold-font !optional\" if the extend should be able to fail.\A "; }
+  content: "Sass::SyntaxError: \"header\" failed to @extend \".regular-font\".\A The selector \".regular-font\" was not found.\A Use \"@extend .regular-font !optional\" if the extend should be able to fail.\A "; }
