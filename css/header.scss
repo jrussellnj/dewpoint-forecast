@@ -21,8 +21,11 @@ header {
 
   .locate-me {
     color: inherit;
-    margin: 0 0 0 .5em;
     text-decoration: none;
+
+    @include min($desktopXSmall) {
+      margin: 0 0 0 .5em;
+    }
 
     input {
       display: inline-block;
