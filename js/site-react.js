@@ -68,6 +68,7 @@ class DewpointForecast extends React.Component {
         // If not, display an error
         function(error) {
           console.log(error);
+          alert(error);
         },
 
         // Options
@@ -80,6 +81,7 @@ class DewpointForecast extends React.Component {
 
       // If the user's browser doesn't have a geolocation API at all, display an error
       console.log("Nope");
+      alert("Location disallowed");
     }
   }
 
@@ -246,8 +248,27 @@ class DewpointForecast extends React.Component {
 
   /* Perform date formatting on a unix timestamp */
   formatDate(timestamp) {
-    let d = new Date(timestamp * 1000);
-    return d.format('l, F jS');
+    let
+      today = new Date(),
+      tomorrow = new Date(today.getTime() + 86400000),
+      providedDate = new Date(timestamp * 1000),
+      outputtedFormat = '';
+
+    // If the provided timestamp is today or tomorrow, say "Today" or "Tomorrow",
+    // else output a formatted date like 'Thursday, April 20th'
+    console.log(providedDate.format('M/j'), today.format('M/j'), tomorrow.format('M/j'));
+
+    if (providedDate.format('M/j') == today.format('M/j')) {
+      outputtedFormat = 'Today';
+    }
+    else if (providedDate.format('M/j') == tomorrow.format('M/j')) {
+      outputtedFormat = 'Tomorrow';
+    }
+    else {
+      outputtedFormat = providedDate.format('l, F jS');
+    }
+
+    return outputtedFormat;
   }
 
   render() {
@@ -255,7 +276,7 @@ class DewpointForecast extends React.Component {
     let currentlyData = this.state.weather != null ?
       <div className="col-11 col-md-6 currently day">
         <div className={'p-3 inner-wrapper ' + this.getDiscomfortLevel(this.state.weather.currently.dewPoint).dpClass}>
-          <div>Currently in...</div>
+          <div>Currently</div>
           <div className="city-name">{this.state.city}</div>
 
           <div className="dewpoint">
