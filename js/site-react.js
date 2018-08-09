@@ -244,6 +244,10 @@ class DewpointForecast extends React.Component {
         localStorage.setItem('cachedCoords', JSON.stringify({ latitude: results[0].geometry.location.lat(), longitude: results[0].geometry.location.lng() }));
       });
     });
+
+    $(input).click(function() {
+      $(this).val('');
+    });
   }
 
   /* Perform date formatting on a unix timestamp */
