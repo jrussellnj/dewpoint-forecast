@@ -123,7 +123,6 @@ class DewpointForecast extends React.Component {
         return results.json()
       })
       .then(data => {
-        console.log(data);
 
         $('.getting-weather').fadeOut(function() {
 
@@ -260,8 +259,6 @@ class DewpointForecast extends React.Component {
 
     // If the provided timestamp is today or tomorrow, say "Today" or "Tomorrow",
     // else output a formatted date like 'Thursday, April 20th'
-    console.log(providedDate.format('M/j'), today.format('M/j'), tomorrow.format('M/j'));
-
     if (providedDate.format('M/j') == today.format('M/j')) {
       outputtedFormat = 'Today';
     }
