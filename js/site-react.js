@@ -67,8 +67,8 @@ class DewpointForecast extends React.Component {
 
         // If not, display an error
         function(error) {
-          console.log(error);
-          alert(error);
+          console.log(error.message);
+          alert(error.message);
         },
 
         // Options
