@@ -260,7 +260,7 @@ class DewpointForecast extends React.Component {
     // If the provided timestamp is today or tomorrow, say "Today" or "Tomorrow",
     // else output a formatted date like 'Thursday, April 20th'
     if (providedDate.format('M/j') == today.format('M/j')) {
-      outputtedFormat = 'Today';
+      outputtedFormat = "Today's forecast";
     }
     else if (providedDate.format('M/j') == tomorrow.format('M/j')) {
       outputtedFormat = 'Tomorrow';
