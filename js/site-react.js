@@ -67,20 +67,17 @@ class DewpointForecast extends React.Component {
 
         // If not, display an error
         function(error) {
-          console.log(error.message);
           alert(error.message);
         },
 
         // Options
         {
-          enableHighAccuracy: true,
-          maximumAge: 60000
+          timeout:10000
         });
     }
     else {
 
       // If the user's browser doesn't have a geolocation API at all, display an error
-      console.log("Nope");
       alert("Location disallowed");
     }
   }
@@ -215,7 +212,7 @@ class DewpointForecast extends React.Component {
     let
       that = this,
       input = document.getElementById('location-search'),
-      autocomplete = new google.maps.places.Autocomplete(input, { placeIdOnly: true }),
+      autocomplete = new google.maps.places.Autocomplete(input, { fields: ['place_id', 'name', 'types'] }),
       geocoder = new google.maps.Geocoder;
 
     autocomplete.addListener('place_changed', function() {
