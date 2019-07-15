@@ -7,14 +7,20 @@ body {
   font-family: 'Lora', serif;
 }
 
-.getting-location,
-.getting-weather {
-  display: none;
-  margin: 1em 0;
+// Header and search bar area
+.loading-icons {
+  display: inline-block;
+  vertical-align: middle;
 
-  img {
+  .getting-location,
+  .getting-weather {
     animation: pulse 1s infinite;
     height: 25px;
+    display: none;
+
+    &.showing {
+      display: inline;
+    }
   }
 }
 

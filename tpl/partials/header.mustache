@@ -27,17 +27,31 @@
   <script type="text/javascript" src="js/functions.js"></script>
   <script type="text/babel" src="js/site-react.js"></script>
 
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+
   <link href="https://fonts.googleapis.com/css?family=Lora:400,700" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="css/compressed/site.css" />
 </head>
-<body>
+<body class="container">
 
   <header>
-    <h2> <img class="dewdrop" src="/image/icons8-water-96.png" /> Dewpoint Forecast </h2>
+    <div class="row">
+      <div class="col-12">
+        <h2> <img class="dewdrop" src="/image/icons8-water-96.png" /> Dewpoint Forecast </h2>
+      </div>
+    </div>
 
-    <div>
-      <input id="location-search" type="text" placeholder="Enter a location">
-      <a href="#" class="locate-me"><img src="/image/icons8-near-me-48.png" /> Find me</a>
+    <div class="row">
+      <div class="col-12">
+        <div>
+          <input id="location-search" type="text" placeholder="Enter a location">
+          <a href="#" class="locate-me"><img src="/image/icons8-near-me-48.png" /> Find me</a>
+        </div>
+
+        <div class="loading-icons">
+          <img src="/image/icons8-near-me-30.png" class="getting-location">
+          <img src="/image/icons8-partly-cloudy-day-30.png" class="getting-weather">
+        </div>
+      </div>
     </div>
   </header>

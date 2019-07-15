@@ -43,9 +43,10 @@ class DewpointForecast extends React.Component {
   }
 
   getUserLocation() {
-    let that = this;
+    let that = this,
+        $gettingLocation = $('.getting-location');
 
-    $('.getting-location').css('display', 'flex').hide().fadeIn();
+    $gettingLocation.addClass('showing');
 
     // Get the user's latitude and longitude
     if ("geolocation" in navigator) {
@@ -56,7 +57,7 @@ class DewpointForecast extends React.Component {
         function(userCoords) {
 
           // Hide the "Getting location..." indicator
-          $('.getting-location').fadeOut();
+          $gettingLocation.removeClass('showing');
 
           // Save these coordinates to the local storage for faster weather retrieval on subsequent visits
           localStorage.setItem('cachedCoords', JSON.stringify(cloneAsObject(userCoords.coords)));
@@ -83,7 +84,8 @@ class DewpointForecast extends React.Component {
   }
 
   resetUserLocation(e) {
-    let that = this;
+    let that = this,
+        $gettingLocation = $('.getting-location');
 
     if (e) {
       e.preventDefault();
@@ -102,18 +104,19 @@ class DewpointForecast extends React.Component {
       });
 
       // Show location loader
-      $('.getting-location').fadeIn();
-    });
+      $gettingLocation.addClass('showing');
 
-    // Reinitialize the retrieval of the user's location
-    this.getUserLocation();
+      // Reinitialize the retrieval of the user's location
+      that.getUserLocation();
+    });
   }
 
   // Ask the server side to make an API call to Dark Sky to get the weather
   getWeather(coords) {
-    let that = this;
+    let that = this,
+        $gettingWeather = $('.getting-weather');
 
-    $('.getting-weather').css('display', 'flex').hide().fadeIn();
+    $gettingWeather.addClass('showing');
 
     fetch('/get-weather?longitude=' + coords.longitude + '&latitude=' + coords.latitude)
       .then(results => {
@@ -121,7 +124,7 @@ class DewpointForecast extends React.Component {
       })
       .then(data => {
 
-        $('.getting-weather').fadeOut(function() {
+        $gettingWeather.removeClass('showing');
 
           // Fade the forecast blocks out, if they're out, then fade the new weather in
           $('.forecast-holder').fadeOut(function() {
@@ -134,7 +137,7 @@ class DewpointForecast extends React.Component {
               weather: data
             });
           }).fadeIn();
-        });
+        // });
       });
   }
 

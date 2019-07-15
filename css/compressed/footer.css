@@ -1,4 +1,8 @@
-footer { font-size: .75em; margin: 2.5em 0; text-align: center; }
-footer a { color: inherit; }
+footer {
+  font-size: .75em;
+  margin: 2.5em 0;
+  text-align: center; }
+  footer a {
+    color: inherit; }
 
 /*# sourceMappingURL=footer.css.map */
