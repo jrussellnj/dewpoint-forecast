@@ -144,7 +144,6 @@ class DewpointForecast extends React.Component {
       });
   }
 
-
   // Use the Google Geolocation API to get the name of the city corresponding to the user's latitude and longitude
   getCityName(coords) {
     let
