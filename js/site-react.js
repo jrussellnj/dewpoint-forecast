@@ -20,7 +20,8 @@ class DewpointForecast extends React.Component {
   }
 
   componentDidMount() {
-    let that = this;
+    let that = this,
+        $locateMe = $('.locate-me');
 
     // If the user has a latitude and longitude stored in local storage, use that to make the API call,
     // and if not, request their location from their browser
@@ -37,7 +38,7 @@ class DewpointForecast extends React.Component {
     // Asynchronously load the Google Maps script, passing in the callback reference
     loadJS('https://maps.googleapis.com/maps/api/js?key=AIzaSyCBYBfpS2m1cNHWPvPrp0WrUv1dTZiYO24&libraries=places&callback=initLookup');
 
-    $('.locate-me').click(function() {
+    $locateMe.click(function() {
       that.resetUserLocation();
     });
   }
@@ -85,14 +86,15 @@ class DewpointForecast extends React.Component {
 
   resetUserLocation(e) {
     let that = this,
-        $gettingLocation = $('.getting-location');
+        $gettingLocation = $('.getting-location'),
+        $forecastHolder = $('.forecast-holder');
 
     if (e) {
       e.preventDefault();
     }
 
     // Fade out the forecast data
-    $('.forecast-holder').fadeOut(function() {
+    $forecastHolder.fadeOut(function() {
 
       // Remove the locally-stored coords
       localStorage.removeItem('cachedCoords');
@@ -114,7 +116,8 @@ class DewpointForecast extends React.Component {
   // Ask the server side to make an API call to Dark Sky to get the weather
   getWeather(coords) {
     let that = this,
-        $gettingWeather = $('.getting-weather');
+        $gettingWeather = $('.getting-weather'),
+        $forecastHolder = $('.forecast-holder');
 
     $gettingWeather.addClass('showing');
 
@@ -127,7 +130,7 @@ class DewpointForecast extends React.Component {
         $gettingWeather.removeClass('showing');
 
           // Fade the forecast blocks out, if they're out, then fade the new weather in
-          $('.forecast-holder').fadeOut(function() {
+          $forecastHolder.fadeOut(function() {
 
             // Get the city name for the user's location
             that.getCityName(coords);
@@ -215,6 +218,7 @@ class DewpointForecast extends React.Component {
     let
       that = this,
       input = document.getElementById('location-search'),
+      $forecastHolder = $('.forecast-holder'),
       autocomplete = new google.maps.places.Autocomplete(input, { fields: ['place_id', 'name', 'types'] }),
       geocoder = new google.maps.Geocoder;
 
@@ -226,7 +230,7 @@ class DewpointForecast extends React.Component {
       }
 
       // Hide the old forecast
-      $('.forecast-holder').fadeOut();
+      $forecastHolder.fadeOut();
 
       // Get the latitude and longitude for the new location and then find its weather
       geocoder.geocode({ 'placeId': place.place_id }, function(results, status) {
@@ -244,9 +248,44 @@ class DewpointForecast extends React.Component {
       });
     });
 
+    // Clicking into the input clears it
     $(input).click(function() {
       $(this).val('');
     });
+
+    // Hitting enter selects the first location in thelocations dropdown
+    var _addEventListener = (input.addEventListener) ? input.addEventListener : input.attachEvent;
+
+    // Simulate a 'down arrow' keypress on hitting 'return' when no pac suggestion is selected and then trigger the original listener.
+    function addEventListenerWrapper(type, listener) {
+
+      if (type == "keydown") {
+        var originalListener = listener;
+
+        listener = function (event) {
+          if (event.which == 13 || event.keyCode == 13) {
+          var suggestionSelected = $(".pac-item.pac-selected").length > 0;
+
+            if (!suggestionSelected) {
+              var simulatedDownArrow = $.Event("keydown", { keyCode:40, which:40 });
+              originalListener.apply(input, [ simulatedDownArrow ]);
+            }
+          }
+
+          originalListener.apply(input, [ event ]);
+        };
+      }
+
+      // Add the modified listener
+      _addEventListener.apply(input, [ type, listener ]);
+    }
+
+    if (input.addEventListener) {
+      input.addEventListener = addEventListenerWrapper;
+    }
+    else if (input.attachEvent) {
+      input.attachEvent = addEventListenerWrapper;
+    }
   }
 
   /* Perform date formatting on a unix timestamp */
