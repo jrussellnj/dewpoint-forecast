@@ -35,8 +35,12 @@ class DewpointForecast extends React.Component {
     // Connect the initLookup function within this class to the global window context, so Google Maps can invoke it
     window.initLookup = this.initLookup.bind(this);
 
-    // Asynchronously load the Google Maps script, passing in the callback reference
-    loadJS('https://maps.googleapis.com/maps/api/js?key=AIzaSyCBYBfpS2m1cNHWPvPrp0WrUv1dTZiYO24&libraries=places&callback=initLookup');
+    // Get the Maps API key and then load the Maps script
+    loadJS('/js/api-key.js', function() {
+
+      // Asynchronously load the Google Maps script, passing in the callback reference
+      loadJS('https://maps.googleapis.com/maps/api/js?key=' + googleMapsApiKey + '&libraries=places&callback=initLookup');
+    });
 
     $locateMe.click(function() {
       that.resetUserLocation();
@@ -363,12 +367,14 @@ class DewpointForecast extends React.Component {
 const domContainer = document.querySelector('#forecast');
 ReactDOM.render(e(DewpointForecast), domContainer);
 
-function loadJS(src) {
+function loadJS(src, callback) {
   var
     ref = window.document.getElementsByTagName("script")[0],
     script = window.document.createElement("script");
 
   script.src = src;
   script.async = true;
+  script.onload = callback;
+
   ref.parentNode.insertBefore(script, ref);
 }
