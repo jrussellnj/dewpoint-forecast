@@ -46,7 +46,8 @@ class DewpointForecast extends React.Component {
       loadJS('https://maps.googleapis.com/maps/api/js?key=' + googleMapsApiKey + '&libraries=places&callback=initLookup');
     });
 
-    $locateMe.click(function() {
+    $locateMe.click(function(e) {
+      e.preventDefault();
       that.resetUserLocation();
     });
   }
@@ -157,7 +158,7 @@ class DewpointForecast extends React.Component {
   /* Use the Google Geolocation API to get the name of the city corresponding to the user's latitude and longitude */
   getCityName(coords) {
     let
-      geocodeUrl = 'https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyCBYBfpS2m1cNHWPvPrp0WrUv1dTZiYO24&latlng=' + coords.latitude + ',' + coords.longitude,
+      geocodeUrl = 'https://maps.googleapis.com/maps/api/geocode/json?key=' + googleMapsApiKey + '&latlng=' + coords.latitude + ',' + coords.longitude,
       that = this;
 
     fetch(geocodeUrl)
@@ -167,11 +168,18 @@ class DewpointForecast extends React.Component {
       .then(data => {
 
         let
-          arr_address_comp = data.results[0].address_components,
+          addressComponents = data.results[0].address_components,
+          localityPieces  = $.grep(addressComponents, function(elem, index) {
+            return (elem.types[0] == 'locality' || elem.types[0] == 'administrative_area_level_1' || elem.types[0] == 'country')
+          }),
+          sanitizedAddress = $.map(localityPieces, function(e, i) {
+            return e.long_name
+          }).join(', '),
           cityName = '';
 
-        arr_address_comp.forEach(function(val) {
-          if(val.types[0] === "locality" ){
+        // Find the town or city name of the found locality
+        addressComponents.forEach(function(val) {
+          if (val.types[0] === 'locality') {
             cityName = val.long_name;
           }
         });
