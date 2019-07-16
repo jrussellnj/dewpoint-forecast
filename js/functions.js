@@ -12,3 +12,16 @@ function cloneAsObject(obj) {
 
   return temp;
 }
+
+// Used for loading external Javascript
+function loadJS(src, callback) {
+  var
+    ref = window.document.getElementsByTagName("script")[0],
+    script = window.document.createElement("script");
+
+  script.src = src;
+  script.async = true;
+  script.onload = callback;
+
+  ref.parentNode.insertBefore(script, ref);
+}

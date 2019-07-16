@@ -1,11 +1,14 @@
 'use strict';
 
 const e = React.createElement;
+
+// Any cached location coordinates that might be in local storage
 const cachedCoords = localStorage.getItem('cachedCoords');
 
-// Create a React component to fetch weather data and display the upcoming dew point forecast
+/* Create a React component to fetch weather data and display the upcoming dew point forecast */
 class DewpointForecast extends React.Component {
 
+  /* React constructor */
   constructor(props) {
     super(props);
 
@@ -19,6 +22,7 @@ class DewpointForecast extends React.Component {
     this.resetUserLocation = this.resetUserLocation.bind(this);
   }
 
+  /* What to do after the React component mounts */
   componentDidMount() {
     let that = this,
         $locateMe = $('.locate-me');
@@ -47,6 +51,7 @@ class DewpointForecast extends React.Component {
     });
   }
 
+  /* Use geolocation to find the user's latitude and longitude */
   getUserLocation() {
     let that = this,
         $gettingLocation = $('.getting-location');
@@ -88,6 +93,7 @@ class DewpointForecast extends React.Component {
     }
   }
 
+  /* Re-geolocate the user */
   resetUserLocation(e) {
     let that = this,
         $gettingLocation = $('.getting-location'),
@@ -117,7 +123,7 @@ class DewpointForecast extends React.Component {
     });
   }
 
-  // Ask the server side to make an API call to Dark Sky to get the weather
+  /* Ask the server side to make an API call to Dark Sky to get the weather */
   getWeather(coords) {
     let that = this,
         $gettingWeather = $('.getting-weather'),
@@ -148,7 +154,7 @@ class DewpointForecast extends React.Component {
       });
   }
 
-  // Use the Google Geolocation API to get the name of the city corresponding to the user's latitude and longitude
+  /* Use the Google Geolocation API to get the name of the city corresponding to the user's latitude and longitude */
   getCityName(coords) {
     let
       geocodeUrl = 'https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyCBYBfpS2m1cNHWPvPrp0WrUv1dTZiYO24&latlng=' + coords.latitude + ',' + coords.longitude,
@@ -177,7 +183,7 @@ class DewpointForecast extends React.Component {
       });
   }
 
-  // Return the point on the discomfort scale for the provided dewpoint
+  /* Return the point on the discomfort scale for the provided dewpoint */
   getDiscomfortLevel(dewpoint) {
 
     let
@@ -216,7 +222,7 @@ class DewpointForecast extends React.Component {
     return { text: levelText, dpClass: dpClass };
   }
 
-  /* Used for the location search bar */
+  /* Initialize the location search bar */
   initLookup() {
     let
       that = this,
@@ -364,17 +370,6 @@ class DewpointForecast extends React.Component {
   }
 }
 
+// Find the forecast container and kick off React
 const domContainer = document.querySelector('#forecast');
 ReactDOM.render(e(DewpointForecast), domContainer);
-
-function loadJS(src, callback) {
-  var
-    ref = window.document.getElementsByTagName("script")[0],
-    script = window.document.createElement("script");
-
-  script.src = src;
-  script.async = true;
-  script.onload = callback;
-
-  ref.parentNode.insertBefore(script, ref);
-}
