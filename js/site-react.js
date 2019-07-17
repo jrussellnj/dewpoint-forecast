@@ -281,7 +281,7 @@ class DewpointForecast extends React.Component {
 
         listener = function (event) {
           if (event.which == 13 || event.keyCode == 13) {
-          var suggestionSelected = $(".pac-item.pac-selected").length > 0;
+          var suggestionSelected = $(".pac-item.pac-item-selected").length > 0;
 
             if (!suggestionSelected) {
               var simulatedDownArrow = $.Event("keydown", { keyCode:40, which:40 });
