@@ -5,5 +5,13 @@ footer {
 
   a {
     color: inherit;
+
+    &.underlined {
+      text-decoration: underline;
+    }
+  }
+
+  p {
+    margin-bottom: .25rem;
   }
 }

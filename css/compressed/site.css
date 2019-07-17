@@ -106,6 +106,10 @@ footer {
   text-align: center; }
   footer a {
     color: inherit; }
+    footer a.underlined {
+      text-decoration: underline; }
+  footer p {
+    margin-bottom: .25rem; }
 
 body {
   font-family: 'Lora', serif; }
