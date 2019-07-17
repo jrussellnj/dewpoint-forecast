@@ -55,7 +55,8 @@ class DewpointForecast extends React.Component {
   /* Use geolocation to find the user's latitude and longitude */
   getUserLocation() {
     let that = this,
-        $gettingLocation = $('.getting-location');
+        $gettingLocation = $('.getting-location'),
+        $userDeniedGeolocation = $('.denied-geolocation');
 
     $gettingLocation.addClass('showing');
 
@@ -77,9 +78,10 @@ class DewpointForecast extends React.Component {
           that.getWeather(userCoords.coords);
         },
 
-        // If not, display an error
+        // If not, display a 'geolocation denied' message
         function(error) {
-          alert(error.message);
+          $gettingLocation.removeClass('showing');
+          $userDeniedGeolocation.addClass('showing');
         },
 
         // Options
@@ -90,7 +92,7 @@ class DewpointForecast extends React.Component {
     else {
 
       // If the user's browser doesn't have a geolocation API at all, display an error
-      alert("Location disallowed");
+      alert("Location unavailable from browser");
     }
   }
 
@@ -128,7 +130,8 @@ class DewpointForecast extends React.Component {
   getWeather(coords) {
     let that = this,
         $gettingWeather = $('.getting-weather'),
-        $forecastHolder = $('.forecast-holder');
+        $forecastHolder = $('.forecast-holder'),
+        $userDeniedGeolocation = $('.denied-geolocation');
 
     $gettingWeather.addClass('showing');
 
@@ -139,6 +142,7 @@ class DewpointForecast extends React.Component {
       .then(data => {
 
         $gettingWeather.removeClass('showing');
+        $userDeniedGeolocation.removeClass('showing');
 
           // Fade the forecast blocks out, if they're out, then fade the new weather in
           $forecastHolder.fadeOut(function() {

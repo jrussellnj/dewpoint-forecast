@@ -196,6 +196,12 @@ body {
           font-size: .9em;
           position: absolute; }
 
+/* Geolocation denied */
+.denied-geolocation {
+  display: none; }
+  .denied-geolocation.showing {
+    display: flex; }
+
 /* Location search bar */
 #location-search {
   background-color: #fff;
