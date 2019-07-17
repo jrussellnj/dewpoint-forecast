@@ -116,6 +116,7 @@ body {
 
 .loading-icons {
   display: inline-block;
+  margin: 1em 0 0;
   vertical-align: middle; }
   .loading-icons .getting-location,
   .loading-icons .getting-weather {
