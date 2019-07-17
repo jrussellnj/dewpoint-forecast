@@ -174,19 +174,16 @@ class DewpointForecast extends React.Component {
         let
           addressComponents = data.results[0].address_components,
           localityPieces  = $.grep(addressComponents, function(elem, index) {
-            return (elem.types[0] == 'locality' || elem.types[0] == 'administrative_area_level_1' || elem.types[0] == 'country')
+            var acceptableElements = [ 'neighborhood', 'locality', 'administrative_area_level_1', 'country' ];
+            return acceptableElements.includes(elem.types[0]);
           }),
           sanitizedAddress = $.map(localityPieces, function(e, i) {
             return e.long_name
           }).join(', '),
           cityName = '';
 
-        // Find the town or city name of the found locality
-        addressComponents.forEach(function(val) {
-          if (val.types[0] === 'locality') {
-            cityName = val.long_name;
-          }
-        });
+        // Use either a location's neighborhood name or its general locality for displaying
+        cityName = localityPieces[0].long_name;
 
         // Update the state with the city name
         that.setState({
