@@ -78,11 +78,20 @@ header {
   margin: 2em 0;
   text-align: center; }
   header .dewdrop {
-    display: inline-block;
+    display: block;
     height: 40px;
+    margin: 0 auto .5em;
     vertical-align: middle; }
+    @media screen and (min-width: 950px) {
+      header .dewdrop {
+        display: inline-block;
+        margin: auto; } }
   header h1 {
+    font-size: 1.7em;
     margin: 0; }
+    @media screen and (min-width: 950px) {
+      header h1 {
+        font-size: 2.5rem; } }
   header #dew-point-in {
     opacity: 0;
     transition: .5s all; }
@@ -135,6 +144,8 @@ body {
     @media screen and (min-width: 950px) {
       .forecast-holder .currently.day .inner-wrapper {
         height: 250px; } }
+  .forecast-holder .currently p {
+    margin: 0; }
   .forecast-holder .currently .city-name {
     font-size: 2em; }
   .forecast-holder .currently .dewpoint {
@@ -143,7 +154,7 @@ body {
     @media screen and (min-width: 950px) {
       .forecast-holder .currently .dewpoint {
         position: absolute;
-        top: 20px;
+        top: 45px;
         right: 20px; } }
     .forecast-holder .currently .dewpoint .discomfort-text {
       font-size: .3em;

@@ -351,17 +351,18 @@ class DewpointForecast extends React.Component {
           </div>
 
           <div className="currently-data">
-            <div>Currently</div>
-            <div><img className="small-icon" src="/image/icons8-partly-cloudy-day-30.png"/> {this.state.weather.currently.summary}</div>
-            <div><img className="small-icon" src="/image/icons8-temperature-24.png" /> Temperature: {Math.round(this.state.weather.currently.temperature)}&deg;</div>
-            <div><img className="small-icon" src="/image/icons8-humidity-26.png" />  Humidity: {Math.round(this.state.weather.currently.humidity * 100)}%</div>
+            <p>Currently</p>
+            <p><img className="small-icon" src="/image/icons8-partly-cloudy-day-30.png"/> {this.state.weather.currently.summary}</p>
+            <p><img className="small-icon" src="/image/icons8-temperature-24.png" /> Temperature: {Math.round(this.state.weather.currently.temperature)}&deg;</p>
+            <p><img className="small-icon" src="/image/icons8-humidity-26.png" />  Humidity: {Math.round(this.state.weather.currently.humidity * 100)}%</p>
           </div>
 
           <div className="todays-forecast-data">
-            <div>Today's forecast</div>
-            <div><img className="small-icon" src="/image/icons8-partly-cloudy-day-30.png"/> {this.state.weather.daily.data[0].summary}</div>
-            <div><img className="small-icon" src="/image/icons8-temperature-24.png" /> Temperature: {Math.round(this.state.weather.daily.data[0].temperatureHigh)}&deg;</div>
-            <div><img className="small-icon" src="/image/icons8-humidity-26.png" />  Humidity: {Math.round(this.state.weather.daily.data[0].humidity * 100)}%. Dewpoint: {Math.round(this.state.weather.daily.data[0].dewPoint)}&deg;.</div>
+            <p>Today's forecast</p>
+            <p><img className="small-icon" src="/image/icons8-partly-cloudy-day-30.png"/> {this.state.weather.daily.data[0].summary}</p>
+            <p><img className="small-icon" src="/image/icons8-temperature-24.png" /> Temperature: {Math.round(this.state.weather.daily.data[0].temperatureHigh)}&deg;</p>
+            <p><img className="small-icon" src="/image/icons8-humidity-26.png" /> Humidity: {Math.round(this.state.weather.daily.data[0].humidity * 100)}%</p>
+            <p><img className="small-icon" src="/image/icons8-water-48.png" /> Dewpoint: {Math.round(this.state.weather.daily.data[0].dewPoint)}&deg;</p>
           </div>
         </div>
       </div>
@@ -389,12 +390,12 @@ class DewpointForecast extends React.Component {
     return (
       <div>
         <header className="row align-items-center">
-            <div className="col-6">
+            <div className="col-12 col-md-6">
               <h1> <img className="dewdrop" src="/image/icons8-water-96.png" /> Dew Point Forecast </h1>
               <div id="dew-point-in" className="text-center">in {this.state.city}</div>
             </div>
 
-            <div className="col-6">
+            <div className="col-12 col-md-6">
               <div>
                 <input id="location-search" type="text" placeholder="Find dew point in another location..." />
                 <a href="#" id="locate-me"><img src="/image/icons8-hunt-100.png" /> Use my location</a>

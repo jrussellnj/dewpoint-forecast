@@ -39,6 +39,10 @@ body {
       }
     }
 
+    p {
+      margin: 0;
+    }
+
     .city-name {
       @extend .bold-font;
       font-size: 2em;
@@ -50,7 +54,7 @@ body {
 
       @include min($desktopXSmall) {
         position: absolute;
-        top: 20px;
+        top: 45px;
         right: 20px;
       }
 

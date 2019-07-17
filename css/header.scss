@@ -6,13 +6,24 @@ header {
   text-align: center;
 
   .dewdrop {
-    display: inline-block;
+    display: block;
     height: 40px;
+    margin: 0 auto .5em;
     vertical-align: middle;
+
+    @include min($desktopXSmall) {
+      display: inline-block;
+      margin: auto;
+    }
   }
 
   h1 {
+    font-size: 1.7em;
     margin: 0;
+
+    @include min($desktopXSmall) {
+      font-size: 2.5rem;
+    }
   }
 
   #dew-point-in {
