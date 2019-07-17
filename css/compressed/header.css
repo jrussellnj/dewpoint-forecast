@@ -43,21 +43,23 @@ header {
     display: inline-block;
     height: 40px;
     vertical-align: middle; }
-  header h2 {
-    font-size: 1.5em; }
-    @media screen and (min-width: 950px) {
-      header h2 {
-        font-size: 2em; } }
-  header .locate-me {
+  header h1 {
+    margin: 0; }
+  header #dew-point-in {
+    opacity: 0;
+    transition: .5s all; }
+    header #dew-point-in.showing {
+      opacity: 1; }
+  header #locate-me {
     color: inherit;
     text-decoration: none; }
     @media screen and (min-width: 950px) {
-      header .locate-me {
+      header #locate-me {
         margin: 0 0 0 .5em; } }
-    header .locate-me input {
+    header #locate-me input {
       display: inline-block;
       vertical-align: middle; }
-    header .locate-me img {
+    header #locate-me img {
       display: inline-block;
       height: 20px;
       vertical-align: middle; }

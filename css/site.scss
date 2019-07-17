@@ -7,14 +7,13 @@ body {
   font-family: 'Lora', serif;
 }
 
-// Header and search bar area
+// Location and weather loading icons
 .loading-icons {
-  display: inline-block;
-  margin: 1em 0 0;
+  margin: 1em 0;
   vertical-align: middle;
 
-  .getting-location,
-  .getting-weather {
+  #getting-location,
+  #getting-weather {
     animation: pulse 1s infinite;
     height: 25px;
     display: none;
@@ -27,8 +26,6 @@ body {
 
 // Forecast block
 .forecast-holder {
-  display: none;
-
   .currently {
     position: relative;
 
@@ -64,8 +61,8 @@ body {
     }
 
     .currently-data {
-      font-size: 1.1em;
-      margin: 1em 0;
+      font-size: 1.0em;
+      margin: 0 0 1em;
 
       .update-location {
         color: inherit;
@@ -73,6 +70,10 @@ body {
         margin-top: 10px;
         font-size: .75em;
       }
+    }
+
+    .todays-forecast-data {
+      font-size: .9em;
     }
   }
 
@@ -106,7 +107,6 @@ body {
 
         .temperature {
           font-size: 4em;
-          line-height: .75em;
           position: absolute;
           text-align: center;
           top: 0;
@@ -164,6 +164,6 @@ body {
 
   @include min($desktopXSmall) {
     display: inline-block;
-    width: 400px;
+    max-width: 60%;
   }
 }

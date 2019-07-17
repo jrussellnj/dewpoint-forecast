@@ -25,7 +25,7 @@ class DewpointForecast extends React.Component {
   /* What to do after the React component mounts */
   componentDidMount() {
     let that = this,
-        $locateMe = $('.locate-me');
+        $locateMe = $('#locate-me');
 
     // If the user has a latitude and longitude stored in local storage, use that to make the API call,
     // and if not, request their location from their browser
@@ -48,6 +48,10 @@ class DewpointForecast extends React.Component {
 
     $locateMe.click(function(e) {
       e.preventDefault();
+
+      // Empty out any location entered into the location search bar
+
+      // Clear and rRe-query the browser location
       that.resetUserLocation();
     });
   }
@@ -55,7 +59,7 @@ class DewpointForecast extends React.Component {
   /* Use geolocation to find the user's latitude and longitude */
   getUserLocation() {
     let that = this,
-        $gettingLocation = $('.getting-location'),
+        $gettingLocation = $('#getting-location'),
         $userDeniedGeolocation = $('.denied-geolocation');
 
     $gettingLocation.addClass('showing');
@@ -99,12 +103,16 @@ class DewpointForecast extends React.Component {
   /* Re-geolocate the user */
   resetUserLocation(e) {
     let that = this,
-        $gettingLocation = $('.getting-location'),
-        $forecastHolder = $('.forecast-holder');
+        $gettingLocation = $('#getting-location'),
+        $forecastHolder = $('#forecast-blocks'),
+        $dewPointIn = $('#dew-point-in');
 
     if (e) {
       e.preventDefault();
     }
+
+    // Fade out the city name
+    $dewPointIn.removeClass('showing');
 
     // Fade out the forecast data
     $forecastHolder.fadeOut(function() {
@@ -129,8 +137,8 @@ class DewpointForecast extends React.Component {
   /* Ask the server side to make an API call to Dark Sky to get the weather */
   getWeather(coords) {
     let that = this,
-        $gettingWeather = $('.getting-weather'),
-        $forecastHolder = $('.forecast-holder'),
+        $gettingWeather = $('#getting-weather'),
+        $forecastHolder = $('#forecast-blocks'),
         $userDeniedGeolocation = $('.denied-geolocation');
 
     $gettingWeather.addClass('showing');
@@ -155,15 +163,15 @@ class DewpointForecast extends React.Component {
               weather: data
             });
           }).fadeIn();
-        // });
       });
   }
 
   /* Use the Google Geolocation API to get the name of the city corresponding to the user's latitude and longitude */
   getCityName(coords) {
     let
+      that = this,
       geocodeUrl = 'https://maps.googleapis.com/maps/api/geocode/json?key=' + googleMapsApiKey + '&latlng=' + coords.latitude + ',' + coords.longitude,
-      that = this;
+      $dewPointIn = $('#dew-point-in');
 
     fetch(geocodeUrl)
       .then(results => {
@@ -183,12 +191,14 @@ class DewpointForecast extends React.Component {
           cityName = '';
 
         // Use either a location's neighborhood name or its general locality for displaying
-        cityName = localityPieces[0].long_name;
+        cityName = localityPieces[0].long_name + ', ' + localityPieces[1].short_name;
 
         // Update the state with the city name
         that.setState({
           city: cityName
         });
+
+        $dewPointIn.addClass('showing');
       });
   }
 
@@ -197,33 +207,34 @@ class DewpointForecast extends React.Component {
 
     let
       levelText = '',
-      dpClass = '';
+      dpClass = '',
+      roundedDewpoint = Math.round(dewpoint);
 
-    if (dewpoint < 50) {
+    if (roundedDewpoint < 50) {
       levelText = 'Pleasant';
       dpClass = 'dp-level-1';
     }
-    else if (dewpoint >= 50 && dewpoint <= 55.99) {
+    else if (roundedDewpoint >= 50 && roundedDewpoint < 55) {
       levelText = 'Comfortable';
       dpClass = 'dp-level-1';
     }
-    else if (dewpoint >= 56 && dewpoint <= 60.99) {
+    else if (roundedDewpoint >= 55 && roundedDewpoint < 60) {
       levelText = 'Noticible';
       dpClass = 'dp-level-2';
     }
-    else if (dewpoint >= 61 && dewpoint <= 65.99) {
+    else if (roundedDewpoint >= 60 && roundedDewpoint < 65) {
       levelText = 'Sticky';
       dpClass = 'dp-level-3';
     }
-    else if (dewpoint >= 66 && dewpoint <= 70.99) {
+    else if (roundedDewpoint >= 65 && roundedDewpoint < 70) {
       levelText = 'Uncomfortable';
       dpClass = 'dp-level-4';
     }
-    else if (dewpoint >= 71 && dewpoint <= 75.99) {
+    else if (roundedDewpoint >= 70 && roundedDewpoint <= 75) {
       levelText = 'Oppressive';
       dpClass = 'dp-level-5';
     }
-    else if (dewpoint > 75) {
+    else if (roundedDewpoint > 75) {
       levelText = 'Severe Discomfort';
       dpClass = 'dp-level-6';
     }
@@ -235,8 +246,8 @@ class DewpointForecast extends React.Component {
   initLookup() {
     let
       that = this,
-      input = document.getElementById('location-search'),
-      $forecastHolder = $('.forecast-holder'),
+      input = $('#location-search').get(0),
+      $forecastHolder = $('#forecast-blocks'),
       autocomplete = new google.maps.places.Autocomplete(input, { fields: ['place_id', 'name', 'types'] }),
       geocoder = new google.maps.Geocoder;
 
@@ -334,24 +345,29 @@ class DewpointForecast extends React.Component {
     let currentlyData = this.state.weather != null ?
       <div className="col-11 col-md-6 currently day">
         <div className={'p-3 inner-wrapper ' + this.getDiscomfortLevel(this.state.weather.currently.dewPoint).dpClass}>
-          <div>Currently</div>
-          <div className="city-name">{this.state.city}</div>
-
           <div className="dewpoint">
             <div><img className="dewdrop-icon" src="/image/icons8-water-48.png" /> {Math.round(this.state.weather.currently.dewPoint)}&deg;</div>
             <div className="discomfort-text">{this.getDiscomfortLevel(this.state.weather.currently.dewPoint).text}</div>
           </div>
 
           <div className="currently-data">
+            <div>Currently</div>
             <div><img className="small-icon" src="/image/icons8-partly-cloudy-day-30.png"/> {this.state.weather.currently.summary}</div>
             <div><img className="small-icon" src="/image/icons8-temperature-24.png" /> Temperature: {Math.round(this.state.weather.currently.temperature)}&deg;</div>
             <div><img className="small-icon" src="/image/icons8-humidity-26.png" />  Humidity: {Math.round(this.state.weather.currently.humidity * 100)}%</div>
+          </div>
+
+          <div className="todays-forecast-data">
+            <div>Today's forecast</div>
+            <div><img className="small-icon" src="/image/icons8-partly-cloudy-day-30.png"/> {this.state.weather.daily.data[0].summary}</div>
+            <div><img className="small-icon" src="/image/icons8-temperature-24.png" /> Temperature: {Math.round(this.state.weather.daily.data[0].temperatureHigh)}&deg;</div>
+            <div><img className="small-icon" src="/image/icons8-humidity-26.png" />  Humidity: {Math.round(this.state.weather.daily.data[0].humidity * 100)}%. Dewpoint: {Math.round(this.state.weather.daily.data[0].dewPoint)}&deg;.</div>
           </div>
         </div>
       </div>
       : null;
 
-    let dailyData = this.state.weather != null ? this.state.weather.daily.data.map(day =>
+    let dailyData = this.state.weather != null ? this.state.weather.daily.data.slice(1).map(day =>
       <div className="col-11 col-sm-4 col-md-3 day" key={day.time}>
         <div className={ 'd-flex align-items-center p-3 inner-wrapper ' + this.getDiscomfortLevel(day.dewPoint).dpClass}>
           <div className="day-contents">
@@ -371,9 +387,46 @@ class DewpointForecast extends React.Component {
     ) : null;
 
     return (
-      <div className="row justify-content-center justify-content-md-start">
-        {currentlyData}
-        {dailyData}
+      <div>
+        <header className="row align-items-center">
+            <div className="col-6">
+              <h1> <img className="dewdrop" src="/image/icons8-water-96.png" /> Dew Point Forecast </h1>
+              <div id="dew-point-in" className="text-center">in {this.state.city}</div>
+            </div>
+
+            <div className="col-6">
+              <div>
+                <input id="location-search" type="text" placeholder="Find dew point in another location..." />
+                <a href="#" id="locate-me"><img src="/image/icons8-hunt-100.png" /> Use my location</a>
+              </div>
+            </div>
+        </header>
+
+        <div className="row loading-icons">
+          <div className="col-12 text-center">
+            <img src="/image/icons8-near-me-30.png" id="getting-location" />
+            <img src="/image/icons8-partly-cloudy-day-30.png" id="getting-weather" />
+          </div>
+        </div>
+
+        <div className="row justify-content-center justify-content-md-start" id="forecast-blocks">
+          {currentlyData}
+          {dailyData}
+        </div>
+
+        <div className="row denied-geolocation text-center">
+          <div className="col-12">
+            <h3>Geolocation denied</h3>
+            <p>But that's alright! You can use the site without geolocation by entering a location above.</p>
+          </div>
+        </div>
+
+        <footer className="row">
+          <div className="col-12 justify-content-center">
+            <p><a target="_blank" href="https://www.weather.gov/arx/why_dewpoint_vs_humidity" className="underlined">What is the "dew point"?</a></p>
+            <p><a target="_blank" href="https://darksky.net/poweredby/">Powered by Dark Sky</a> &bull; <a target="_blank" href="https://icons8.com">Icon pack by Icons8</a></p>
+          </div>
+        </footer>
       </div>
     );
   }

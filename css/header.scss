@@ -11,15 +11,20 @@ header {
     vertical-align: middle;
   }
 
-  h2 {
-    font-size: 1.5em;
+  h1 {
+    margin: 0;
+  }
 
-    @include min($desktopXSmall) {
-      font-size: 2em;
+  #dew-point-in {
+    opacity: 0;
+    transition: .5s all;
+
+    &.showing {
+      opacity: 1;
     }
   }
 
-  .locate-me {
+  #locate-me {
     color: inherit;
     text-decoration: none;
 
