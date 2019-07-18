@@ -13,5 +13,10 @@ footer {
 
   p {
     margin-bottom: .25rem;
+
+    @include min($desktopXSmall) {
+      margin: 0 auto;
+      max-width: 50%;
+    }
   }
 }

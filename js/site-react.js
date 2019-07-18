@@ -364,28 +364,28 @@ class DewpointForecast extends React.Component {
 
             <div className="currently-data">
               <div className="dewpoint">
-                <div><img className="dewdrop-icon" src="/image/icons8-water-48.png" /> {Math.round(this.state.weather.currently.dewPoint)}&deg;</div>
+                <div><img className="dewdrop-icon" src="/image/drop-silhouette.svg" /> {Math.round(this.state.weather.currently.dewPoint)}&deg;</div>
                 <div className="discomfort-text">{this.getDiscomfortLevel(this.state.weather.currently.dewPoint).text}</div>
               </div>
 
               <p className="heading">Right Now</p>
-              <p><img className="small-icon" src="/image/icons8-partly-cloudy-day-30.png"/> {this.state.weather.currently.summary}</p>
-              <p><img className="small-icon" src="/image/icons8-temperature-24.png" /> Temperature: {Math.round(this.state.weather.currently.temperature)}&deg;</p>
-              <p><img className="small-icon" src="/image/icons8-humidity-26.png" />  Humidity: {Math.round(this.state.weather.currently.humidity * 100)}%</p>
+              <p><img className="small-icon" src="/image/sun-cloud.svg"/> {this.state.weather.currently.summary}</p>
+              <p><img className="small-icon" src="/image/thermometer.svg" /> Temperature: {Math.round(this.state.weather.currently.temperature)}&deg;</p>
+              <p><img className="small-icon" src="/image/humidity.svg" />  Humidity: {Math.round(this.state.weather.currently.humidity * 100)}%</p>
             </div>
           </div>
 
           <div className={'p-3 inner-wrapper col-12 col-md-6 ' + this.getDiscomfortLevel(this.state.weather.daily.data[0].dewPoint).dpClass}>
             <div className="dewpoint">
-              <div><img className="dewdrop-icon" src="/image/icons8-water-48.png" /> {Math.round(this.state.weather.currently.dewPoint)}&deg;</div>
+              <div><img className="dewdrop-icon" src="/image/drop-silhouette.svg" /> {Math.round(this.state.weather.currently.dewPoint)}&deg;</div>
               <div className="discomfort-text">{this.getDiscomfortLevel(this.state.weather.currently.dewPoint).text}</div>
             </div>
 
             <p className="heading">Today's forecast</p>
-            <p><img className="small-icon" src="/image/icons8-partly-cloudy-day-30.png"/> {this.state.weather.daily.data[0].summary}</p>
-            <p><img className="small-icon" src="/image/icons8-temperature-24.png" /> Temperature: {Math.round(this.state.weather.daily.data[0].temperatureHigh)}&deg;</p>
-            <p><img className="small-icon" src="/image/icons8-humidity-26.png" /> Humidity: {Math.round(this.state.weather.daily.data[0].humidity * 100)}%</p>
-            <p><img className="small-icon" src="/image/icons8-water-48.png" /> Dewpoint: {Math.round(this.state.weather.daily.data[0].dewPoint)}&deg;</p>
+            <p><img className="small-icon" src="/image/sun-cloud.svg"/> {this.state.weather.daily.data[0].summary}</p>
+            <p><img className="small-icon" src="/image/thermometer.svg" /> Temperature: {Math.round(this.state.weather.daily.data[0].temperatureHigh)}&deg;</p>
+            <p><img className="small-icon" src="/image/humidity.svg" /> Humidity: {Math.round(this.state.weather.daily.data[0].humidity * 100)}%</p>
+            <p><img className="small-icon" src="/image/drop-silhouette.svg" /> Dewpoint: {Math.round(this.state.weather.daily.data[0].dewPoint)}&deg;</p>
           </div>
         </div>
       </div>
@@ -398,7 +398,7 @@ class DewpointForecast extends React.Component {
 
             <div className="temperature">
               <div className="date">{this.formatDate(day.time)}</div>
-              <img className="dewdrop-icon" src="/image/icons8-water-48.png" /> {Math.round(day.dewPoint)}&deg;
+              <img className="dewdrop-icon" src="/image/drop-silhouette.svg" /> {Math.round(day.dewPoint)}&deg;
               <div className="discomfort-text">{this.getDiscomfortLevel(day.dewPoint).text}</div>
             </div>
 
@@ -414,21 +414,21 @@ class DewpointForecast extends React.Component {
       <div>
         <header className="row align-items-center">
             <div className="col-12 col-md-6">
-              <h1> <img className="dewdrop" src="/image/icons8-water-96.png" /> Dew Point Forecast </h1>
+              <h1> <img className="dewdrop" src="/image/drop.svg" /> Dew Point Forecast </h1>
             </div>
 
             <div className="col-12 col-md-6">
               <div>
                 <input id="location-search" type="text" placeholder="Find dew point in another location..." />
-                <a href="#" id="locate-me"><img src="/image/icons8-hunt-100.png" /> Use my location</a>
+                <a href="#" id="locate-me"><img src="/image/target.svg" /> Use my location</a>
               </div>
             </div>
         </header>
 
         <div className="row loading-icons">
           <div className="col-12 text-center">
-            <img src="/image/icons8-near-me-30.png" id="getting-location" />
-            <img src="/image/icons8-partly-cloudy-day-30.png" id="getting-weather" />
+            <img src="/image/target.svg" id="getting-location" />
+            <img src="/image/sun-cloud.svg" id="getting-weather" />
           </div>
         </div>
 
@@ -453,7 +453,7 @@ class DewpointForecast extends React.Component {
         <footer className="row">
           <div className="col-12 justify-content-center">
             <p><a target="_blank" href="https://www.weather.gov/arx/why_dewpoint_vs_humidity" className="underlined">What is the "dew point"?</a></p>
-            <p><a target="_blank" href="https://darksky.net/poweredby/">Powered by Dark Sky</a> &bull; <a target="_blank" href="https://icons8.com">Icon pack by Icons8</a></p>
+            <p><a target="_blank" href="https://darksky.net/poweredby/">Powered by Dark Sky</a> API. Icons made by <a href="https://www.flaticon.com/authors/vectors-market" title="Vectors Market">Vectors Market</a>, <a href="https://www.freepik.com/" title="Freepik">Freepik</a>, <a href="https://www.flaticon.com/authors/epiccoders" title="EpicCoders">EpicCoders</a>, and <a href="https://www.flaticon.com/authors/lucy-g" title="Lucy G">Lucy G</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>.</p>
           </div>
         </footer>
       </div>

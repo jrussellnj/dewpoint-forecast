@@ -122,6 +122,10 @@ footer {
       text-decoration: underline; }
   footer p {
     margin-bottom: .25rem; }
+    @media screen and (min-width: 950px) {
+      footer p {
+        margin: 0 auto;
+        max-width: 50%; } }
 
 body {
   font-family: 'Lora', serif; }
