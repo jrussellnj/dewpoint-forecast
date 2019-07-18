@@ -93,6 +93,7 @@ header {
       header h1 {
         font-size: 2.5rem; } }
   header #dew-point-in {
+    display: none;
     opacity: 0;
     transition: .5s all; }
     header #dew-point-in.showing {

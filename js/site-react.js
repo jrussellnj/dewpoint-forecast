@@ -82,7 +82,7 @@ class DewpointForecast extends React.Component {
           that.getWeather(userCoords.coords);
         },
 
-        // If not, display a 'geolocation denied' message
+        // If not, display a 'geolocation failed' message
         function(error) {
           $gettingLocation.removeClass('showing');
           $userDeniedGeolocation.addClass('showing');
@@ -90,7 +90,7 @@ class DewpointForecast extends React.Component {
 
         // Options
         {
-          timeout:10000
+          timeout: 10000
         });
     }
     else {
@@ -103,6 +103,7 @@ class DewpointForecast extends React.Component {
   /* Re-geolocate the user */
   resetUserLocation(e) {
     let that = this,
+        $locationSearch = $('#location-search'),
         $gettingLocation = $('#getting-location'),
         $forecastHolder = $('#forecast-blocks'),
         $dewPointIn = $('#dew-point-in');
@@ -113,6 +114,9 @@ class DewpointForecast extends React.Component {
 
     // Fade out the city name
     $dewPointIn.removeClass('showing');
+
+    // Clear location bar 
+    $locationSearch.val('');
 
     // Fade out the forecast data
     $forecastHolder.fadeOut(function() {
@@ -139,7 +143,11 @@ class DewpointForecast extends React.Component {
     let that = this,
         $gettingWeather = $('#getting-weather'),
         $forecastHolder = $('#forecast-blocks'),
-        $userDeniedGeolocation = $('.denied-geolocation');
+        $locationSearch = $('#location-search'),
+        $userDeniedGeolocation = $('.denied-geolocation'),
+        parsedCoords = JSON.parse(cachedCoords);
+
+    console.log("wait, what are the coords now?", parsedCoords);
 
     $gettingWeather.addClass('showing');
 
@@ -155,8 +163,13 @@ class DewpointForecast extends React.Component {
           // Fade the forecast blocks out, if they're out, then fade the new weather in
           $forecastHolder.fadeOut(function() {
 
-            // Get the city name for the user's location
-            that.getCityName(coords);
+            // Get the city name for the user's location if one isn't cached in cachedCoords
+            if ((parsedCoords['placeName'] !== undefined) && ($locationSearch.val() == '')) {
+              $locationSearch.val(parsedCoords['placeName']);
+            }
+            else {
+              that.getCityName(coords);
+            }
 
             // Update the state with the retrieveved weather data
             that.setState({
@@ -171,7 +184,7 @@ class DewpointForecast extends React.Component {
     let
       that = this,
       geocodeUrl = 'https://maps.googleapis.com/maps/api/geocode/json?key=' + googleMapsApiKey + '&latlng=' + coords.latitude + ',' + coords.longitude,
-      $dewPointIn = $('#dew-point-in');
+      $locationSearch = $('#location-search');
 
     fetch(geocodeUrl)
       .then(results => {
@@ -187,18 +200,11 @@ class DewpointForecast extends React.Component {
           }),
           sanitizedAddress = $.map(localityPieces, function(e, i) {
             return e.long_name
-          }).join(', '),
-          cityName = '';
+          }).join(', ');
 
-        // Use either a location's neighborhood name or its general locality for displaying
-        cityName = localityPieces[0].long_name + ', ' + localityPieces[1].short_name;
-
-        // Update the state with the city name
-        that.setState({
-          city: cityName
-        });
-
-        $dewPointIn.addClass('showing');
+          if ($locationSearch.val() == '') {
+            $locationSearch.val(sanitizedAddress);
+          }
       });
   }
 
@@ -254,27 +260,31 @@ class DewpointForecast extends React.Component {
     autocomplete.addListener('place_changed', function() {
       var place = autocomplete.getPlace();
 
-      if (!place.place_id) {
-        return;
+      if (place.place_id) {
+
+        // Hide the old forecast
+        $forecastHolder.fadeOut();
+
+        // Get the latitude and longitude for the new location and then find its weather
+        geocoder.geocode({ 'placeId': place.place_id }, function(results, status) {
+          if (status !== 'OK') {
+            window.alert('Geocoder failed due to: ' + status);
+            return;
+          }
+
+          // Get weather for the requested location
+          that.getWeather({ latitude: results[0].geometry.location.lat(), longitude: results[0].geometry.location.lng() });
+
+          // Save this location in localStorage for subsequent visits
+          localStorage.removeItem('cachedCoords');
+
+          localStorage.setItem('cachedCoords', JSON.stringify({
+            latitude: results[0].geometry.location.lat(),
+            longitude: results[0].geometry.location.lng(),
+            placeName: place.name
+          }));
+        });
       }
-
-      // Hide the old forecast
-      $forecastHolder.fadeOut();
-
-      // Get the latitude and longitude for the new location and then find its weather
-      geocoder.geocode({ 'placeId': place.place_id }, function(results, status) {
-        if (status !== 'OK') {
-          window.alert('Geocoder failed due to: ' + status);
-          return;
-        }
-
-        // Get weather for the requested location
-        that.getWeather({ latitude: results[0].geometry.location.lat(), longitude: results[0].geometry.location.lng() });
-
-        // Save this location in localStorage for subsequent visits
-        localStorage.removeItem('cachedCoords');
-        localStorage.setItem('cachedCoords', JSON.stringify({ latitude: results[0].geometry.location.lat(), longitude: results[0].geometry.location.lng() }));
-      });
     });
 
     // Clicking into the input clears it
@@ -417,7 +427,7 @@ class DewpointForecast extends React.Component {
 
         <div className="row denied-geolocation text-center">
           <div className="col-12">
-            <h3>Geolocation denied</h3>
+            <h3>Geolocation failed</h3>
             <p>But that's alright! You can use the site without geolocation by entering a location above.</p>
           </div>
         </div>
