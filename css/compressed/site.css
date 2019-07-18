@@ -138,6 +138,8 @@ body {
     .loading-icons #getting-weather.showing {
       display: inline; }
 
+.forecast-holder #forecast-blocks .row {
+  margin: 0; }
 .forecast-holder .city-name {
   line-height: 1.25em; }
 .forecast-holder .currently {
@@ -147,8 +149,19 @@ body {
     @media screen and (min-width: 950px) {
       .forecast-holder .currently.day .inner-wrapper {
         height: 250px; } }
+  .forecast-holder .currently .today {
+    border: 3px solid #000; }
+    .forecast-holder .currently .today .heading {
+      font-size: 1.5em;
+      margin: 1em 0 0; }
+      @media screen and (min-width: 950px) {
+        .forecast-holder .currently .today .heading {
+          margin: 0; } }
   .forecast-holder .currently p {
     margin: 0; }
+    @media screen and (min-width: 950px) {
+      .forecast-holder .currently p {
+        max-width: 50%; } }
   .forecast-holder .currently .dewpoint {
     font-size: 4em;
     text-align: center; }
@@ -156,7 +169,7 @@ body {
       .forecast-holder .currently .dewpoint {
         position: absolute;
         top: 45px;
-        right: 20px; } }
+        right: 70px; } }
     .forecast-holder .currently .dewpoint .discomfort-text {
       font-size: .3em;
       text-align: center; }
@@ -168,8 +181,6 @@ body {
       display: inline-block;
       margin-top: 10px;
       font-size: .75em; }
-  .forecast-holder .currently .todays-forecast-data {
-    font-size: .9em; }
 .forecast-holder .day {
   min-height: 15em;
   padding: 5px; }

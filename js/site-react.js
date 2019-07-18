@@ -358,22 +358,30 @@ class DewpointForecast extends React.Component {
   render() {
 
     let currentlyData = this.state.weather != null ?
-      <div className="col-11 col-md-6 currently day">
-        <div className={'p-3 inner-wrapper ' + this.getDiscomfortLevel(this.state.weather.currently.dewPoint).dpClass}>
-          <div className="dewpoint">
-            <div><img className="dewdrop-icon" src="/image/icons8-water-48.png" /> {Math.round(this.state.weather.currently.dewPoint)}&deg;</div>
-            <div className="discomfort-text">{this.getDiscomfortLevel(this.state.weather.currently.dewPoint).text}</div>
+      <div className="col-11 col-md-12 currently day">
+        <div className="row today">
+          <div className={'p-3 inner-wrapper col-12 col-md-6 ' + this.getDiscomfortLevel(this.state.weather.currently.dewPoint).dpClass}>
+
+            <div className="currently-data">
+              <div className="dewpoint">
+                <div><img className="dewdrop-icon" src="/image/icons8-water-48.png" /> {Math.round(this.state.weather.currently.dewPoint)}&deg;</div>
+                <div className="discomfort-text">{this.getDiscomfortLevel(this.state.weather.currently.dewPoint).text}</div>
+              </div>
+
+              <p className="heading">Right Now</p>
+              <p><img className="small-icon" src="/image/icons8-partly-cloudy-day-30.png"/> {this.state.weather.currently.summary}</p>
+              <p><img className="small-icon" src="/image/icons8-temperature-24.png" /> Temperature: {Math.round(this.state.weather.currently.temperature)}&deg;</p>
+              <p><img className="small-icon" src="/image/icons8-humidity-26.png" />  Humidity: {Math.round(this.state.weather.currently.humidity * 100)}%</p>
+            </div>
           </div>
 
-          <div className="currently-data">
-            <p>Currently</p>
-            <p><img className="small-icon" src="/image/icons8-partly-cloudy-day-30.png"/> {this.state.weather.currently.summary}</p>
-            <p><img className="small-icon" src="/image/icons8-temperature-24.png" /> Temperature: {Math.round(this.state.weather.currently.temperature)}&deg;</p>
-            <p><img className="small-icon" src="/image/icons8-humidity-26.png" />  Humidity: {Math.round(this.state.weather.currently.humidity * 100)}%</p>
-          </div>
+          <div className={'p-3 inner-wrapper col-12 col-md-6 ' + this.getDiscomfortLevel(this.state.weather.daily.data[0].dewPoint).dpClass}>
+            <div className="dewpoint">
+              <div><img className="dewdrop-icon" src="/image/icons8-water-48.png" /> {Math.round(this.state.weather.currently.dewPoint)}&deg;</div>
+              <div className="discomfort-text">{this.getDiscomfortLevel(this.state.weather.currently.dewPoint).text}</div>
+            </div>
 
-          <div className="todays-forecast-data">
-            <p>Today's forecast</p>
+            <p className="heading">Today's forecast</p>
             <p><img className="small-icon" src="/image/icons8-partly-cloudy-day-30.png"/> {this.state.weather.daily.data[0].summary}</p>
             <p><img className="small-icon" src="/image/icons8-temperature-24.png" /> Temperature: {Math.round(this.state.weather.daily.data[0].temperatureHigh)}&deg;</p>
             <p><img className="small-icon" src="/image/icons8-humidity-26.png" /> Humidity: {Math.round(this.state.weather.daily.data[0].humidity * 100)}%</p>

@@ -26,6 +26,13 @@ body {
 
 // Forecast block
 .forecast-holder {
+
+  #forecast-blocks {
+    .row {
+      margin: 0;
+    }
+  }
+
   .city-name {
     line-height: 1.25em;
   }
@@ -43,8 +50,25 @@ body {
       }
     }
 
+    .today {
+      border: 3px solid #000;
+
+      .heading {
+        font-size: 1.5em;
+        margin: 1em 0 0;
+
+        @include min($desktopXSmall) {
+          margin: 0;
+        }
+      }
+    }
+
     p {
       margin: 0;
+
+      @include min($desktopXSmall) {
+        max-width: 50%;
+      }
     }
 
     .dewpoint {
@@ -54,7 +78,7 @@ body {
       @include min($desktopXSmall) {
         position: absolute;
         top: 45px;
-        right: 20px;
+        right: 70px;
       }
 
       .discomfort-text {
@@ -73,10 +97,6 @@ body {
         margin-top: 10px;
         font-size: .75em;
       }
-    }
-
-    .todays-forecast-data {
-      font-size: .9em;
     }
   }
 
