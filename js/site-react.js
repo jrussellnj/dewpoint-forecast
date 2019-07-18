@@ -145,7 +145,8 @@ class DewpointForecast extends React.Component {
         $forecastHolder = $('#forecast-blocks'),
         $locationSearch = $('#location-search'),
         $userDeniedGeolocation = $('.denied-geolocation'),
-        parsedCoords = JSON.parse(localStorage.getItem('cachedCoords'));
+        parsedCoords = JSON.parse(localStorage.getItem('cachedCoords')),
+        cityName = '';
 
     $gettingWeather.addClass('showing');
 
@@ -163,16 +164,22 @@ class DewpointForecast extends React.Component {
 
             // Get the city name for the user's location if one isn't cached in cachedCoords
             if ((parsedCoords['placeName'] !== undefined) && ($locationSearch.val() == '')) {
-              $locationSearch.val(parsedCoords['placeName']);
+              cityName = $locationSearch.val(parsedCoords['placeName']);
+
+              // Update the state with the retrieveved weather data and the city name
+              that.setState({
+                weather: data,
+                city: cityName
+              });
             }
             else {
               that.getCityName(coords);
-            }
 
-            // Update the state with the retrieveved weather data
-            that.setState({
-              weather: data
-            });
+              // Update the state with the retrieveved weather data
+              that.setState({
+                weather: data
+              });
+            }
           }).fadeIn();
       });
   }
@@ -200,9 +207,9 @@ class DewpointForecast extends React.Component {
             return e.long_name
           }).join(', ');
 
-          if ($locationSearch.val() == '') {
-            $locationSearch.val(sanitizedAddress);
-          }
+          that.setState({
+            city: sanitizedAddress
+          });
       });
   }
 
@@ -400,7 +407,6 @@ class DewpointForecast extends React.Component {
         <header className="row align-items-center">
             <div className="col-12 col-md-6">
               <h1> <img className="dewdrop" src="/image/icons8-water-96.png" /> Dew Point Forecast </h1>
-              <div id="dew-point-in" className="text-center">in {this.state.city}</div>
             </div>
 
             <div className="col-12 col-md-6">
@@ -415,6 +421,12 @@ class DewpointForecast extends React.Component {
           <div className="col-12 text-center">
             <img src="/image/icons8-near-me-30.png" id="getting-location" />
             <img src="/image/icons8-partly-cloudy-day-30.png" id="getting-weather" />
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="col-12">
+            <h5 className="city-name">{this.state.city}</h5>
           </div>
         </div>
 
