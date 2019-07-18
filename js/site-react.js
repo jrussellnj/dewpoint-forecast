@@ -147,8 +147,6 @@ class DewpointForecast extends React.Component {
         $userDeniedGeolocation = $('.denied-geolocation'),
         parsedCoords = JSON.parse(cachedCoords);
 
-    console.log("wait, what are the coords now?", parsedCoords);
-
     $gettingWeather.addClass('showing');
 
     fetch('/get-weather?longitude=' + coords.longitude + '&latitude=' + coords.latitude)
