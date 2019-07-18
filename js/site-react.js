@@ -377,8 +377,8 @@ class DewpointForecast extends React.Component {
 
           <div className={'p-3 inner-wrapper col-12 col-md-6 ' + this.getDiscomfortLevel(this.state.weather.daily.data[0].dewPoint).dpClass}>
             <div className="dewpoint">
-              <div><img className="dewdrop-icon" src="/image/drop-silhouette.svg" /> {Math.round(this.state.weather.currently.dewPoint)}&deg;</div>
-              <div className="discomfort-text">{this.getDiscomfortLevel(this.state.weather.currently.dewPoint).text}</div>
+              <div><img className="dewdrop-icon" src="/image/drop-silhouette.svg" /> {Math.round(this.state.weather.daily.data[0].dewPoint)}&deg;</div>
+              <div className="discomfort-text">{this.getDiscomfortLevel(this.state.weather.daily.data[0].dewPoint).text}</div>
             </div>
 
             <p className="heading">Today's forecast</p>
