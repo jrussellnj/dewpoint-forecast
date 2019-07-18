@@ -145,7 +145,7 @@ class DewpointForecast extends React.Component {
         $forecastHolder = $('#forecast-blocks'),
         $locationSearch = $('#location-search'),
         $userDeniedGeolocation = $('.denied-geolocation'),
-        parsedCoords = JSON.parse(cachedCoords);
+        parsedCoords = JSON.parse(localStorage.getItem('cachedCoords'));
 
     $gettingWeather.addClass('showing');
 
