@@ -156,11 +156,7 @@ body {
   .forecast-holder .currently .today {
     border: 3px solid #000; }
     .forecast-holder .currently .today .heading {
-      font-size: 1.5em;
-      margin: 1em 0 0; }
-      @media screen and (min-width: 950px) {
-        .forecast-holder .currently .today .heading {
-          margin: 0; } }
+      font-size: 1.5em; }
   .forecast-holder .currently p {
     margin: 0; }
     @media screen and (min-width: 950px) {
