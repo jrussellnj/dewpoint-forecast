@@ -342,10 +342,7 @@ class DewpointForecast extends React.Component {
 
     // If the provided timestamp is today or tomorrow, say "Today" or "Tomorrow",
     // else output a formatted date like 'Thursday, April 20th'
-    if (providedDate.format('M/j') == today.format('M/j')) {
-      outputtedFormat = "Today's forecast";
-    }
-    else if (providedDate.format('M/j') == tomorrow.format('M/j')) {
+    if (providedDate.format('M/j') == tomorrow.format('M/j')) {
       outputtedFormat = 'Tomorrow';
     }
     else {
@@ -412,26 +409,6 @@ class DewpointForecast extends React.Component {
 
     return (
       <div>
-        <header className="row align-items-center">
-            <div className="col-12 col-md-6">
-              <h1> <img className="dewdrop" src="/image/drop.svg" /> Dew Point Forecast </h1>
-            </div>
-
-            <div className="col-12 col-md-6">
-              <div>
-                <input id="location-search" type="text" placeholder="Find dew point in another location..." />
-                <a href="#" id="locate-me"><img src="/image/target.svg" /> Use my location</a>
-              </div>
-            </div>
-        </header>
-
-        <div className="row loading-icons">
-          <div className="col-12 text-center">
-            <img src="/image/target.svg" id="getting-location" />
-            <img src="/image/sun-cloud.svg" id="getting-weather" />
-          </div>
-        </div>
-
         <div className="row">
           <div className="col-12">
             <h5 className="city-name">{this.state.city}</h5>
@@ -449,13 +426,6 @@ class DewpointForecast extends React.Component {
             <p>But that's alright! You can use the site without geolocation by entering a location above.</p>
           </div>
         </div>
-
-        <footer className="row">
-          <div className="col-12 justify-content-center">
-            <p><a target="_blank" href="https://www.weather.gov/arx/why_dewpoint_vs_humidity" className="underlined">What is the "dew point"?</a></p>
-            <p><a target="_blank" href="https://darksky.net/poweredby/">Powered by Dark Sky</a> API. Icons made by <a href="https://www.flaticon.com/authors/vectors-market" title="Vectors Market">Vectors Market</a>, <a href="https://www.freepik.com/" title="Freepik">Freepik</a>, <a href="https://www.flaticon.com/authors/epiccoders" title="EpicCoders">EpicCoders</a>, and <a href="https://www.flaticon.com/authors/lucy-g" title="Lucy G">Lucy G</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>.</p>
-          </div>
-        </footer>
       </div>
     );
   }
