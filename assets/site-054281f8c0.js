@@ -129,7 +129,7 @@ class DewpointForecast extends React.Component {
 
       $forecastHolder.fadeOut(function () {
         // Get the city name for the user's location if one isn't cached in cachedCoords
-        if (parsedCoords['placeName'] !== undefined && $locationSearch.val() == '') {
+        if (parsedCoords && parsedCoords['placeName'] !== undefined && $locationSearch.val() == '') {
           cityName = parsedCoords['placeName']; // Update the state with the retrieveved weather data and the city name
 
           that.setState({
