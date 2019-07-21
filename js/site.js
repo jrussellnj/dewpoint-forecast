@@ -432,5 +432,7 @@ class DewpointForecast extends React.Component {
 }
 
 // Find the forecast container and kick off React
-const domContainer = document.querySelector('#forecast');
-ReactDOM.render(e(DewpointForecast), domContainer);
+$(document).ready(function() {
+  const domContainer = document.querySelector('#forecast');
+  ReactDOM.render(e(DewpointForecast), domContainer);
+});

@@ -7,9 +7,10 @@
       # Initialize and inflate the template
       $tpl = parent::tpl()->loadTemplate('index');
 
-      print $tpl->render(array());
+      print $tpl->render(array(
+        'assetPaths' => parent::getAssetPaths()
+      ));
     }
-
   }
 
 ?>

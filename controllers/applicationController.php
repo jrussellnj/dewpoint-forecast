@@ -14,6 +14,23 @@
 
       return $mustache;
     }
+
+  # Return an object with css and js file hashes for cache-busting purposes
+  protected static function getAssetPaths() {
+    $manifestFile = 'assets/rev-manifest.json';
+    $manifest = file_exists($manifestFile) == true ? json_decode(file_get_contents($manifestFile), true) : [];
+
+    # Mustache can't handle keys with dots, so sanitize them out
+    foreach ($manifest as $key => $value) {
+      if (strpos($key, '.') !== false)  {
+        $dotlessKey = str_replace('.', '', $key);
+        $manifest[$dotlessKey] = $value;
+        unset($manifest[$key]);
+      }
+    }
+
+    return $manifest;
   }
+}
 
 ?>
