@@ -343,6 +343,11 @@ class DewpointForecast extends React.Component {
     return outputtedFormat;
   }
 
+  /* Return a number (usually the dew point value)  with either one decimal place or zero depending on the user's selected units */
+  getValueByUnits(value) {
+    return value.toFixed(getCookie('units') == 'si' ? '1' : '0');
+  }
+
   render() {
 
     let currentlyData = this.state.weather != null ?
@@ -369,7 +374,7 @@ class DewpointForecast extends React.Component {
               </div>
 
               <div className="dewpoint">
-                <div><img className="dewdrop-icon" src="/image/drop-silhouette.svg" /> {this.state.weather.currently.dewPoint.toFixed(getCookie('units') == 'si' ? '1' : '0')}&deg;</div>
+                <div><img className="dewdrop-icon" src="/image/drop-silhouette.svg" /> {this.getValueByUnits(this.state.weather.currently.dewPoint)}&deg;</div>
                 <div className="discomfort-text">{this.getDiscomfortLevel(this.state.weather.currently.dewPoint).text}</div>
               </div>
             </div>
@@ -394,7 +399,7 @@ class DewpointForecast extends React.Component {
             </div>
 
             <div className="dewpoint">
-              <div><img className="dewdrop-icon" src="/image/drop-silhouette.svg" /> {this.state.weather.daily.data[0].dewPoint.toFixed(getCookie('units') == 'si' ? '1' : '0')}&deg;</div>
+              <div><img className="dewdrop-icon" src="/image/drop-silhouette.svg" /> {this.getValueByUnits(this.state.weather.daily.data[0].dewPoint)}&deg;</div>
               <div className="discomfort-text">{this.getDiscomfortLevel(this.state.weather.daily.data[0].dewPoint).text}</div>
             </div>
           </div>
@@ -409,7 +414,7 @@ class DewpointForecast extends React.Component {
 
             <div className="temperature">
               <div className="date">{this.formatDate(day.time)}</div>
-              <img className="dewdrop-icon" src="/image/drop-silhouette.svg" /> {day.dewPoint.toFixed(getCookie('units') == 'si' ? '1' : '0')}&deg;
+              <img className="dewdrop-icon" src="/image/drop-silhouette.svg" /> {this.getValueByUnits(day.dewPoint)}&deg;
               <div className="discomfort-text">{this.getDiscomfortLevel(day.dewPoint).text}</div>
             </div>
 

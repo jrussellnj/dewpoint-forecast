@@ -324,6 +324,12 @@ class DewpointForecast extends React.Component {
 
     return outputtedFormat;
   }
+  /* Return a number (usually the dew point value)  with either one decimal place or zero depending on the user's selected units */
+
+
+  getValueByUnits(value) {
+    return value.toFixed(getCookie('units') == 'si' ? '1' : '0');
+  }
 
   render() {
     let currentlyData = this.state.weather != null ? React.createElement("div", {
@@ -362,7 +368,7 @@ class DewpointForecast extends React.Component {
     }, React.createElement("div", null, React.createElement("img", {
       className: "dewdrop-icon",
       src: "/image/drop-silhouette.svg"
-    }), " ", this.state.weather.currently.dewPoint.toFixed(getCookie('units') == 'si' ? '1' : '0'), "\xB0"), React.createElement("div", {
+    }), " ", this.getValueByUnits(this.state.weather.currently.dewPoint), "\xB0"), React.createElement("div", {
       className: "discomfort-text"
     }, this.getDiscomfortLevel(this.state.weather.currently.dewPoint).text)))), React.createElement("div", {
       className: 'p-3 inner-wrapper col-12 col-md-6 ' + this.getDiscomfortLevel(this.state.weather.daily.data[0].dewPoint).dpClass
@@ -394,7 +400,7 @@ class DewpointForecast extends React.Component {
     }, React.createElement("div", null, React.createElement("img", {
       className: "dewdrop-icon",
       src: "/image/drop-silhouette.svg"
-    }), " ", this.state.weather.daily.data[0].dewPoint.toFixed(getCookie('units') == 'si' ? '1' : '0'), "\xB0"), React.createElement("div", {
+    }), " ", this.getValueByUnits(this.state.weather.daily.data[0].dewPoint), "\xB0"), React.createElement("div", {
       className: "discomfort-text"
     }, this.getDiscomfortLevel(this.state.weather.daily.data[0].dewPoint).text))))) : null;
     let dailyData = this.state.weather != null ? this.state.weather.daily.data.slice(1).map(day => React.createElement("div", {
@@ -411,7 +417,7 @@ class DewpointForecast extends React.Component {
     }, this.formatDate(day.time)), React.createElement("img", {
       className: "dewdrop-icon",
       src: "/image/drop-silhouette.svg"
-    }), " ", day.dewPoint.toFixed(getCookie('units') == 'si' ? '1' : '0'), "\xB0", React.createElement("div", {
+    }), " ", this.getValueByUnits(day.dewPoint), "\xB0", React.createElement("div", {
       className: "discomfort-text"
     }, this.getDiscomfortLevel(day.dewPoint).text)), React.createElement("div", {
       className: "summary"
