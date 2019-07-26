@@ -56,13 +56,25 @@ body {
       .heading {
         font-size: 1.5em;
       }
-    }
 
-    p {
-      margin: 0;
+      .weather-icon {
+        display: inline-block;
+        margin: 4px 0 0;
+        vertical-align: top;
+      }
 
-      @include min($desktopXSmall) {
-        max-width: 50%;
+      .weather-desc {
+        display: inline-block;
+        margin: 0 0 0 6px;
+        vertical-align: top;
+
+        @include min($desktopXSmall) {
+          max-width: 40%;
+        }
+      }
+
+      p {
+        margin: 0;
       }
     }
 
@@ -85,13 +97,6 @@ body {
     .currently-data {
       font-size: 1.0em;
       margin: 0 0 1em;
-
-      .update-location {
-        color: inherit;
-        display: inline-block;
-        margin-top: 10px;
-        font-size: .75em;
-      }
     }
   }
 

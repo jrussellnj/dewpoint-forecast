@@ -336,41 +336,65 @@ class DewpointForecast extends React.Component {
       className: "currently-data"
     }, React.createElement("p", {
       className: "heading"
-    }, "Right Now"), React.createElement("p", null, React.createElement("img", {
+    }, "Right Now"), React.createElement("div", null, React.createElement("div", {
+      className: "weather-icon"
+    }, React.createElement("img", {
       className: "small-icon",
       src: "/image/sun-cloud.svg"
-    }), " ", this.state.weather.currently.summary), React.createElement("p", null, React.createElement("img", {
+    })), React.createElement("div", {
+      className: "weather-desc"
+    }, this.state.weather.currently.summary)), React.createElement("div", null, React.createElement("div", {
+      className: "weather-icon"
+    }, React.createElement("img", {
       className: "small-icon",
       src: "/image/thermometer.svg"
-    }), " Temperature: ", Math.round(this.state.weather.currently.temperature), "\xB0"), React.createElement("p", null, React.createElement("img", {
+    })), React.createElement("div", {
+      className: "weather-desc"
+    }, "Temperature: ", Math.round(this.state.weather.currently.temperature), "\xB0")), React.createElement("div", null, React.createElement("div", {
+      className: "weather-icon"
+    }, React.createElement("img", {
       className: "small-icon",
       src: "/image/humidity.svg"
-    }), "  Humidity: ", Math.round(this.state.weather.currently.humidity * 100), "%"), React.createElement("div", {
+    })), React.createElement("div", {
+      className: "weather-desc"
+    }, "Humidity: ", Math.round(this.state.weather.currently.humidity * 100), "%")), React.createElement("div", {
       className: "dewpoint"
     }, React.createElement("div", null, React.createElement("img", {
       className: "dewdrop-icon",
       src: "/image/drop-silhouette.svg"
-    }), " ", Math.round(this.state.weather.currently.dewPoint), "\xB0"), React.createElement("div", {
+    }), " ", this.state.weather.currently.dewPoint.toFixed(getCookie('units') == 'si' ? '1' : '0'), "\xB0"), React.createElement("div", {
       className: "discomfort-text"
     }, this.getDiscomfortLevel(this.state.weather.currently.dewPoint).text)))), React.createElement("div", {
       className: 'p-3 inner-wrapper col-12 col-md-6 ' + this.getDiscomfortLevel(this.state.weather.daily.data[0].dewPoint).dpClass
     }, React.createElement("p", {
       className: "heading"
-    }, "Today's forecast"), React.createElement("p", null, React.createElement("img", {
+    }, "Today's forecast"), React.createElement("div", null, React.createElement("div", {
+      className: "weather-icon"
+    }, React.createElement("img", {
       className: "small-icon",
       src: "/image/sun-cloud.svg"
-    }), " ", this.state.weather.daily.data[0].summary), React.createElement("p", null, React.createElement("img", {
+    })), React.createElement("div", {
+      className: "weather-desc"
+    }, this.state.weather.daily.data[0].summary)), React.createElement("div", null, React.createElement("div", {
+      className: "weather-icon"
+    }, React.createElement("img", {
       className: "small-icon",
       src: "/image/thermometer.svg"
-    }), " Temperature: ", Math.round(this.state.weather.daily.data[0].temperatureHigh), "\xB0"), React.createElement("p", null, React.createElement("img", {
+    })), React.createElement("div", {
+      className: "weather-desc"
+    }, "Temperature: ", Math.round(this.state.weather.daily.data[0].temperatureHigh), "\xB0")), React.createElement("div", null, React.createElement("div", {
+      className: "weather-icon"
+    }, React.createElement("img", {
       className: "small-icon",
       src: "/image/humidity.svg"
-    }), " Humidity: ", Math.round(this.state.weather.daily.data[0].humidity * 100), "%"), React.createElement("div", {
+    })), React.createElement("div", {
+      className: "weather-desc"
+    }, "Humidity: ", Math.round(this.state.weather.daily.data[0].humidity * 100), "%")), React.createElement("div", {
       className: "dewpoint"
     }, React.createElement("div", null, React.createElement("img", {
       className: "dewdrop-icon",
       src: "/image/drop-silhouette.svg"
-    }), " ", Math.round(this.state.weather.daily.data[0].dewPoint), "\xB0"), React.createElement("div", {
+    }), " ", this.state.weather.daily.data[0].dewPoint.toFixed(getCookie('units') == 'si' ? '1' : '0'), "\xB0"), React.createElement("div", {
       className: "discomfort-text"
     }, this.getDiscomfortLevel(this.state.weather.daily.data[0].dewPoint).text))))) : null;
     let dailyData = this.state.weather != null ? this.state.weather.daily.data.slice(1).map(day => React.createElement("div", {
@@ -387,7 +411,7 @@ class DewpointForecast extends React.Component {
     }, this.formatDate(day.time)), React.createElement("img", {
       className: "dewdrop-icon",
       src: "/image/drop-silhouette.svg"
-    }), " ", Math.round(day.dewPoint), "\xB0", React.createElement("div", {
+    }), " ", day.dewPoint.toFixed(getCookie('units') == 'si' ? '1' : '0'), "\xB0", React.createElement("div", {
       className: "discomfort-text"
     }, this.getDiscomfortLevel(day.dewPoint).text)), React.createElement("div", {
       className: "summary"

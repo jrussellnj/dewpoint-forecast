@@ -200,11 +200,19 @@ body {
     border: 3px solid #000; }
     .forecast-holder .currently .today .heading {
       font-size: 1.5em; }
-  .forecast-holder .currently p {
-    margin: 0; }
-    @media screen and (min-width: 950px) {
-      .forecast-holder .currently p {
-        max-width: 50%; } }
+    .forecast-holder .currently .today .weather-icon {
+      display: inline-block;
+      margin: 4px 0 0;
+      vertical-align: top; }
+    .forecast-holder .currently .today .weather-desc {
+      display: inline-block;
+      margin: 0 0 0 6px;
+      vertical-align: top; }
+      @media screen and (min-width: 950px) {
+        .forecast-holder .currently .today .weather-desc {
+          max-width: 40%; } }
+    .forecast-holder .currently .today p {
+      margin: 0; }
   .forecast-holder .currently .dewpoint {
     font-size: 4em;
     text-align: center; }
@@ -219,11 +227,6 @@ body {
   .forecast-holder .currently .currently-data {
     font-size: 1.0em;
     margin: 0 0 1em; }
-    .forecast-holder .currently .currently-data .update-location {
-      color: inherit;
-      display: inline-block;
-      margin-top: 10px;
-      font-size: .75em; }
 
 .forecast-holder .day {
   min-height: 15em;
