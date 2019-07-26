@@ -14,6 +14,9 @@
   # Home page
   $router->map('GET', '/', 'homeController#index');
 
+  # Switch units between Farenheit and Celcius
+  $router->map('GET', '/switch-units', 'homeController#switchUnits');
+
   # Endpoint to make the server-side Dark Sky API call
   $router->map('GET', '/get-weather', 'weatherController#getWeather');
 

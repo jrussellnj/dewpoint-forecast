@@ -219,38 +219,29 @@ class DewpointForecast extends React.Component {
     let
       levelText = '',
       dpClass = '',
-      roundedDewpoint = Math.round(dewpoint);
+      levelIsFound = false,
+      thisLevel = null,
+      scale = [
+        {'f': 50, 'c': 10, 'text': 'Pleasant', 'class': 'dp-level-1' },
+        {'f': 55, 'c': 12.8, 'text': 'Comfortable', 'class': 'dp-level-1' },
+        {'f': 60, 'c': 15.6, 'text': 'Noticible', 'class': 'dp-level-2' },
+        {'f': 65, 'c': 18.3, 'text': 'Sticky', 'class': 'dp-level-3' },
+        {'f': 70, 'c': 21.1, 'text': 'Uncomfortable', 'class': 'dp-level-4' },
+        {'f': 75, 'c': 23.9, 'text': 'Oppressive', 'class': 'dp-level-5' },
+        {'f': 100, 'c': 37.8, 'text': 'Severe Discomfort', 'class': 'dp-level-6' },
+      ];
 
-    if (roundedDewpoint < 50) {
-      levelText = 'Pleasant';
-      dpClass = 'dp-level-1';
-    }
-    else if (roundedDewpoint >= 50 && roundedDewpoint < 55) {
-      levelText = 'Comfortable';
-      dpClass = 'dp-level-1';
-    }
-    else if (roundedDewpoint >= 55 && roundedDewpoint < 60) {
-      levelText = 'Noticible';
-      dpClass = 'dp-level-2';
-    }
-    else if (roundedDewpoint >= 60 && roundedDewpoint < 65) {
-      levelText = 'Sticky';
-      dpClass = 'dp-level-3';
-    }
-    else if (roundedDewpoint >= 65 && roundedDewpoint < 70) {
-      levelText = 'Uncomfortable';
-      dpClass = 'dp-level-4';
-    }
-    else if (roundedDewpoint >= 70 && roundedDewpoint <= 75) {
-      levelText = 'Oppressive';
-      dpClass = 'dp-level-5';
-    }
-    else if (roundedDewpoint > 75) {
-      levelText = 'Severe Discomfort';
-      dpClass = 'dp-level-6';
-    }
+    scale.forEach(function (value, i) {
+      if (!levelIsFound) {
+        if ((getCookie('units') != null && getCookie('units') == 'si' && dewpoint < value['c'])
+           || (((getCookie('units') != null && getCookie('units') == 'us') || getCookie('units') == null) && dewpoint < value['f'])) {
+          levelIsFound = true
+          thisLevel = value;
+        }
+      }
+    });
 
-    return { text: levelText, dpClass: dpClass };
+    return { text: thisLevel['text'], dpClass: thisLevel['class'] };
   }
 
   /* Initialize the location search bar */
@@ -377,7 +368,6 @@ class DewpointForecast extends React.Component {
             <p><img className="small-icon" src="/image/sun-cloud.svg"/> {this.state.weather.daily.data[0].summary}</p>
             <p><img className="small-icon" src="/image/thermometer.svg" /> Temperature: {Math.round(this.state.weather.daily.data[0].temperatureHigh)}&deg;</p>
             <p><img className="small-icon" src="/image/humidity.svg" /> Humidity: {Math.round(this.state.weather.daily.data[0].humidity * 100)}%</p>
-            <p><img className="small-icon" src="/image/drop-silhouette.svg" /> Dewpoint: {Math.round(this.state.weather.daily.data[0].dewPoint)}&deg;</p>
 
             <div className="dewpoint">
               <div><img className="dewdrop-icon" src="/image/drop-silhouette.svg" /> {Math.round(this.state.weather.daily.data[0].dewPoint)}&deg;</div>
