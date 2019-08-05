@@ -113,6 +113,10 @@ header {
       display: inline-block;
       height: 20px;
       vertical-align: middle; }
+  header .switch-units {
+    font-size: 12px;
+    text-decoration: underline;
+    color: #000; }
 
 /* Generate classes corresponding to a mapping of dew point scale colors */
 .dp-level-1 {

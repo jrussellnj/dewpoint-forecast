@@ -14,7 +14,7 @@ gulp.task('sass', function () {
 });
 
 gulp.task('sass:watch', function () {
-  gulp.watch('css/site.scss', gulp.series('sass', 'revisioning'));
+  gulp.watch('css/*.scss', gulp.series('sass', 'revisioning'));
 });
 
 // Babel transpilation
