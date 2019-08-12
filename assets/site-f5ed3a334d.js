@@ -22,7 +22,8 @@ class DewpointForecast extends React.Component {
 
   componentDidMount() {
     let that = this,
-        $locateMe = $('#locate-me'); // If the user has a latitude and longitude stored in local storage, use that to make the API call,
+        $locateMe = $('#locate-me'),
+        $changeUnits = $('#switch-units'); // If the user has a latitude and longitude stored in local storage, use that to make the API call,
     // and if not, request their location from their browser
 
     if (cachedCoords != null) {
@@ -37,12 +38,34 @@ class DewpointForecast extends React.Component {
     loadJS('/js/api-key.js', function () {
       // Asynchronously load the Google Maps script, passing in the callback reference
       loadJS('https://maps.googleapis.com/maps/api/js?key=' + googleMapsApiKey + '&libraries=places&callback=initLookup');
-    });
+    }); // What to do when the user clicks "Use my location" in the site header
+
     $locateMe.click(function (e) {
-      e.preventDefault(); // Empty out any location entered into the location search bar
-      // Clear and rRe-query the browser location
+      e.preventDefault(); // Clear and re-query the browser location
 
       that.resetUserLocation();
+    }); // What to do when the user clicks the "change units" link in the header
+
+    $changeUnits.click(function (e) {
+      e.preventDefault();
+      let parsedCoords = JSON.parse(localStorage.getItem('cachedCoords')),
+          $oppositeUnitsWording = $('#opposite-units'); // If a "units" cookie is set, use that to determine which unit to change to
+
+      if (Cookies.get('units') !== undefined) {
+        Cookies.set('units', Cookies.get('units') == 'us' ? 'si' : 'us', {
+          expires: 365
+        });
+      } // If not, switch to Celsius because the lack of a cookie implies Fahrenheit
+      else {
+          Cookies.set('units', 'si', {
+            expires: 365
+          });
+        } // Update the "change units" link wording
+
+
+      $oppositeUnitsWording.text(Cookies.get('units') == 'us' ? 'Celsius' : 'Fahrenheit'); // Re-query the Dark Sky API with an (implicit) change in temperature units
+
+      that.getWeather(parsedCoords);
     });
   }
   /* Use geolocation to find the user's latitude and longitude */
@@ -120,7 +143,8 @@ class DewpointForecast extends React.Component {
         $userDeniedGeolocation = $('.denied-geolocation'),
         parsedCoords = JSON.parse(localStorage.getItem('cachedCoords')),
         cityName = '';
-    $gettingWeather.addClass('showing');
+    $gettingWeather.addClass('showing'); // 
+
     fetch('/get-weather?longitude=' + coords.longitude + '&latitude=' + coords.latitude).then(results => {
       return results.json();
     }).then(data => {
@@ -215,7 +239,7 @@ class DewpointForecast extends React.Component {
     }];
     scale.forEach(function (value, i) {
       if (!levelIsFound) {
-        if (getCookie('units') != null && getCookie('units') == 'si' && dewpoint < value['c'] || (getCookie('units') != null && getCookie('units') == 'us' || getCookie('units') == null) && dewpoint < value['f']) {
+        if (Cookies.get('units') != null && Cookies.get('units') == 'si' && dewpoint < value['c'] || (Cookies.get('units') != null && Cookies.get('units') == 'us' || Cookies.get('units') == null) && dewpoint < value['f']) {
           levelIsFound = true;
           thisLevel = value;
         }
@@ -328,7 +352,7 @@ class DewpointForecast extends React.Component {
 
 
   getValueByUnits(value) {
-    return value.toFixed(getCookie('units') == 'si' ? '1' : '0');
+    return value.toFixed(Cookies.get('units') == 'si' ? '1' : '0');
   }
 
   render() {

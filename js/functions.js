@@ -25,16 +25,3 @@ function loadJS(src, callback) {
 
   ref.parentNode.insertBefore(script, ref);
 }
-
-// Get cookie values
-function getCookie(name) {
-  var value = "; " + document.cookie,
-      parts = value.split("; " + name + "="),
-      value = null;
-
-  if (parts.length == 2) {
-    value = parts.pop().split(";").shift();
-  }
-
-  return value;
-}
