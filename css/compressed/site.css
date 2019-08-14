@@ -183,6 +183,10 @@ body {
 .loading-icons {
   margin: 1em 0;
   vertical-align: middle; }
+  @media screen and (min-width: 950px) {
+    .loading-icons {
+      height: 20px;
+      margin: 0; } }
   .loading-icons #getting-location,
   .loading-icons #getting-weather {
     animation: pulse 1s infinite;
@@ -196,6 +200,7 @@ body {
   margin: 0; }
 
 .forecast-holder .city-name {
+  height: 20px;
   line-height: 1.25em; }
 
 .forecast-holder .currently {

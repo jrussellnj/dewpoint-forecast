@@ -23,7 +23,8 @@ class DewpointForecast extends React.Component {
   componentDidMount() {
     let that = this,
         $locateMe = $('#locate-me'),
-        $changeUnits = $('#switch-units'); // If the user has a latitude and longitude stored in local storage, use that to make the API call,
+        $changeUnits = $('#switch-units'),
+        $gettingWeather = $('#getting-weather'); // If the user has a latitude and longitude stored in local storage, use that to make the API call,
     // and if not, request their location from their browser
 
     if (cachedCoords != null) {
@@ -63,9 +64,18 @@ class DewpointForecast extends React.Component {
         } // Update the "change units" link wording
 
 
-      $oppositeUnitsWording.text(Cookies.get('units') == 'us' ? 'Celsius' : 'Fahrenheit'); // Re-query the Dark Sky API with an (implicit) change in temperature units
+      $oppositeUnitsWording.text(Cookies.get('units') == 'us' ? 'Celsius' : 'Fahrenheit');
+      $gettingWeather.addClass('showing'); // Re-query the Dark Sky API with an (implicit) change in temperature units and update the state object
 
-      that.getWeather(parsedCoords);
+      fetch('/get-weather?longitude=' + parsedCoords.longitude + '&latitude=' + parsedCoords.latitude).then(results => {
+        return results.json();
+      }).then(data => {
+        $gettingWeather.removeClass('showing'); // Update the state with the retrieveved weather data
+
+        that.setState({
+          weather: data
+        });
+      });
     });
   }
   /* Use geolocation to find the user's latitude and longitude */
@@ -143,8 +153,7 @@ class DewpointForecast extends React.Component {
         $userDeniedGeolocation = $('.denied-geolocation'),
         parsedCoords = JSON.parse(localStorage.getItem('cachedCoords')),
         cityName = '';
-    $gettingWeather.addClass('showing'); // 
-
+    $gettingWeather.addClass('showing');
     fetch('/get-weather?longitude=' + coords.longitude + '&latitude=' + coords.latitude).then(results => {
       return results.json();
     }).then(data => {

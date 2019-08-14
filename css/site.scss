@@ -12,6 +12,11 @@ body {
   margin: 1em 0;
   vertical-align: middle;
 
+  @include min($desktopXSmall) {
+    height: 20px;
+    margin: 0;
+  }
+
   #getting-location,
   #getting-weather {
     animation: pulse 1s infinite;
@@ -34,6 +39,7 @@ body {
   }
 
   .city-name {
+    height: 20px;
     line-height: 1.25em;
   }
 
