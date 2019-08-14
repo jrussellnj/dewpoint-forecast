@@ -57,8 +57,14 @@ header {
   }
 
   #switch-units {
-    font-size: 12px;
-    text-decoration: underline;
     color: #000;
+    display: block;
+    font-size: 12px;
+    margin: 1em 0 0;
+    text-decoration: underline;
+
+    @include min($desktopXSmall) {
+      margin: 0;
+    }
   }
 }

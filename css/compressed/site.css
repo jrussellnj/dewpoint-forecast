@@ -114,9 +114,14 @@ header {
       height: 20px;
       vertical-align: middle; }
   header #switch-units {
+    color: #000;
+    display: block;
     font-size: 12px;
-    text-decoration: underline;
-    color: #000; }
+    margin: 1em 0 0;
+    text-decoration: underline; }
+    @media screen and (min-width: 950px) {
+      header #switch-units {
+        margin: 0; } }
 
 /* Generate classes corresponding to a mapping of dew point scale colors */
 .dp-level-1 {
