@@ -2,8 +2,12 @@
 
 header {
   @extend .regular-font;
-  margin: 2em 0;
+  margin: 2em 0 0;
   text-align: center;
+
+  @include min($desktopXSmall) {
+    margin: 2em 0;
+  }
 
   .dewdrop {
     display: block;
