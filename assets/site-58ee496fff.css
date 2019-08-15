@@ -200,7 +200,7 @@ body {
   margin: 0; }
 
 .forecast-holder .city-name {
-  height: 20px;
+  min-height: 20px;
   line-height: 1.25em; }
 
 .forecast-holder .currently {
