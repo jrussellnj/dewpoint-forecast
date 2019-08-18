@@ -42,7 +42,9 @@ class DewpointForecast extends React.Component {
     }); // What to do when the user clicks "Use my location" in the site header
 
     $locateMe.click(function (e) {
-      e.preventDefault(); // Clear and re-query the browser location
+      e.preventDefault(); // Send GA get location event
+
+      ga('send', 'event', 'geolocation', 'click'); // Clear and re-query the browser location
 
       that.resetUserLocation();
     }); // What to do when the user clicks the "change units" link in the header
@@ -50,7 +52,9 @@ class DewpointForecast extends React.Component {
     $changeUnits.click(function (e) {
       e.preventDefault();
       let parsedCoords = JSON.parse(localStorage.getItem('cachedCoords')),
-          $oppositeUnitsWording = $('#opposite-units'); // If a "units" cookie is set, use that to determine which unit to change to
+          $oppositeUnitsWording = $('#opposite-units'); // Send GA change units event
+
+      ga('send', 'event', 'switch-units', 'click'); // If a "units" cookie is set, use that to determine which unit to change to
 
       if (Cookies.get('units') !== undefined) {
         Cookies.set('units', Cookies.get('units') == 'us' ? 'si' : 'us', {
@@ -95,11 +99,15 @@ class DewpointForecast extends React.Component {
 
         localStorage.setItem('cachedCoords', JSON.stringify(cloneAsObject(userCoords.coords))); // Get the weather
 
-        that.getWeather(userCoords.coords);
+        that.getWeather(userCoords.coords); // Send success GA event
+
+        ga('send', 'event', 'geolocation', 'get', 'success');
       }, // If not, display a 'geolocation failed' message
       function (error) {
         $gettingLocation.removeClass('showing');
-        $userDeniedGeolocation.addClass('showing');
+        $userDeniedGeolocation.addClass('showing'); // Send error GA event
+
+        ga('send', 'event', 'geolocation', 'get', 'failed');
       }, // Options
       {
         timeout: 10000
@@ -168,7 +176,9 @@ class DewpointForecast extends React.Component {
           that.setState({
             weather: data,
             city: cityName
-          });
+          }); // Send GA get weather event
+
+          ga('send', 'event', 'weather', 'get', cityName);
         } else {
           that.getCityName(coords); // Update the state with the retrieveved weather data
 
@@ -199,7 +209,9 @@ class DewpointForecast extends React.Component {
       }).join(', ');
       that.setState({
         city: sanitizedAddress
-      });
+      }); // Send GA get weather event
+
+      ga('send', 'event', 'weather', 'get', sanitizedAddress);
     });
   }
   /* Return the point on the discomfort scale for the provided dewpoint */
