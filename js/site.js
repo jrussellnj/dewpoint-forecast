@@ -381,21 +381,13 @@ class DewpointForecast extends React.Component {
   }
 
   /* Perform date formatting on a unix timestamp */
-  formatDate(timestamp) {
+  formatDate(timestamp, offset) {
     let
-      today = new Date(),
-      tomorrow = new Date(today.getTime() + 86400000),
-      providedDate = new Date(timestamp * 1000),
+      date = new Date(),
+      providedDate = new Date((timestamp * 1000) + (offset * 3600000) + (date.getTimezoneOffset() * 60000)),
       outputtedFormat = '';
 
-    // If the provided timestamp is today or tomorrow, say "Today" or "Tomorrow",
-    // else output a formatted date like 'Thursday, April 20th'
-    if (providedDate.format('M/j') == tomorrow.format('M/j')) {
-      outputtedFormat = 'Tomorrow';
-    }
-    else {
-      outputtedFormat = providedDate.format('l, F jS');
-    }
+    outputtedFormat = providedDate.format('l, F jS');
 
     return outputtedFormat;
   }
@@ -470,7 +462,7 @@ class DewpointForecast extends React.Component {
           <div className="day-contents">
 
             <div className="temperature">
-              <div className="date">{this.formatDate(day.time)}</div>
+              <div className="date">{this.formatDate(day.time, this.state.weather.offset)}</div>
               <img className="dewdrop-icon" src="/image/drop-silhouette.svg" /> {this.getValueByUnits(day.dewPoint)}&deg;
               <div className="discomfort-text">{this.getDiscomfortLevel(day.dewPoint).text}</div>
             </div>
