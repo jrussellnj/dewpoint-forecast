@@ -274,6 +274,7 @@ class DewpointForecast extends React.Component {
   getDiscomfortLevel(dewpoint) {
 
     let
+      roundedDewpoint = Math.round(dewpoint),
       levelText = '',
       dpClass = '',
       levelIsFound = false,
@@ -290,8 +291,8 @@ class DewpointForecast extends React.Component {
 
     scale.forEach(function (value, i) {
       if (!levelIsFound) {
-        if ((Cookies.get('units') != null && Cookies.get('units') == 'si' && dewpoint < value['c'])
-           || (((Cookies.get('units') != null && Cookies.get('units') == 'us') || Cookies.get('units') == null) && dewpoint < value['f'])) {
+        if ((Cookies.get('units') != null && Cookies.get('units') == 'si' && roundedDewpoint < value['c'])
+           || (((Cookies.get('units') != null && Cookies.get('units') == 'us') || Cookies.get('units') == null) && roundedDewpoint < value['f'])) {
           levelIsFound = true
           thisLevel = value;
         }
