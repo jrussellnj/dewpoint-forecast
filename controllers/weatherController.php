@@ -11,7 +11,7 @@
       $apiUrl = 'https://api.darksky.net/forecast/';
       $apiQueryArgs = array(
         'units=' . (isSet($_COOKIE['units']) ? $_COOKIE['units'] : 'us'),
-        'exclude=minutely,alerts,flags',
+        'exclude=hourly,minutely,alerts,flags',
       );
 
       $fullApiUrl = $apiUrl . $apiKey . '/' . $params['latitude'] . ',' . $params['longitude'] . '?' . implode($apiQueryArgs, '&');
