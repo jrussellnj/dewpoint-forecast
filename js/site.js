@@ -29,14 +29,7 @@ class DewpointForecast extends React.Component {
         $changeUnits = $('#switch-units'),
         $gettingWeather = $('#getting-weather');
 
-    // If the user has a latitude and longitude stored in local storage, use that to make the API call,
-    // and if not, request their location from their browser
-    if (cachedCoords != null) {
-      this.getWeather(JSON.parse(cachedCoords));
-    }
-    else {
-      this.getUserLocation();
-    }
+    this.getUserLocation();
 
     // Connect the initLookup function within this class to the global window context, so Google Maps can invoke it
     window.initLookup = this.initLookup.bind(this);
