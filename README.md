@@ -1,5 +1,5 @@
 # Dewpoint Forecast
-### Answering the question: "Is it gross outside right now?"
+### Answering the question: "How comfortable does the weather outside feel?"
 
 https://dewpoint.xyz
 
